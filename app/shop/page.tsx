@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import Footer from "components/layout/footer";
 import { ShopAddToCart } from "components/shop-add-to-cart";
 import { ShopMobileControls } from "components/shop-mobile-controls";

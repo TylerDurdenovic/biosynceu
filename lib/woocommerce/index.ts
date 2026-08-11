@@ -635,7 +635,7 @@ export async function getProducts({
 } = {}): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return [];
 
@@ -652,7 +652,7 @@ export async function getProducts({
 export async function getProduct(handle: string): Promise<Product | undefined> {
   "use cache";
   cacheTag(TAGS.products);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return undefined;
 
@@ -678,7 +678,7 @@ export async function getProductRecommendations(
 ): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return [];
 
@@ -707,7 +707,7 @@ const ALL_COLLECTION: Collection = {
 export async function getCollections(): Promise<Collection[]> {
   "use cache";
   cacheTag(TAGS.collections);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return [ALL_COLLECTION];
 
@@ -728,7 +728,7 @@ export async function getCollection(
 ): Promise<Collection | undefined> {
   "use cache";
   cacheTag(TAGS.collections);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return undefined;
 
@@ -749,7 +749,7 @@ export async function getCollectionProducts({
 }): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.collections, TAGS.products);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return [];
 
@@ -772,7 +772,7 @@ export async function getCollectionProductCount(
 ): Promise<number> {
   "use cache";
   cacheTag(TAGS.collections, TAGS.products);
-  cacheLife("minutes");
+  cacheLife("hours");
 
   if (!WC_URL) return 0;
 

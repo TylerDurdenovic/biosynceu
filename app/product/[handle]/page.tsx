@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { FrequentlyBoughtTogether } from "components/product/frequently-bought-together";

@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { ShopAddToCart } from "components/shop-add-to-cart";
 import { defaultSort, sorting } from "lib/constants";
 import { getProducts } from "lib/woocommerce";
