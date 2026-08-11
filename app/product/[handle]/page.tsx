@@ -1,3 +1,7 @@
+// Slow cPanel host — give the serverless function room for a cold WC fetch
+// before Vercel kills it (default is often 10-15s, shorter than our 20s fetch).
+export const maxDuration = 30;
+
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { FrequentlyBoughtTogether } from "components/product/frequently-bought-together";
@@ -92,11 +96,16 @@ export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  // Catch transient Shopify errors so a single hiccup during metadata
-  // generation doesn't crash the page render.
+  // Catch transient WooCommerce errors so a single hiccup during metadata
+  // generation doesn't crash the page. IMPORTANT: never call notFound() here —
+  // a timed-out fetch would otherwise be cached as a permanent 404. Let the
+  // page component below be the sole decider of notFound(), and only for a
+  // genuinely missing product.
   const product = await getProduct(params.handle).catch(() => undefined);
 
-  if (!product) return notFound();
+  if (!product) {
+    return { title: "Product", robots: { index: false, follow: false } };
+  }
 
   const { url: imageUrl, width, height, altText } = product.featuredImage || {};
   const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
@@ -198,11 +207,14 @@ export default async function ProductPage(props: {
     props.searchParams,
   ]);
   const [product, bacWater] = await Promise.all([
-    // Catch transient Shopify errors and fall through to notFound() rather
-    // than rendering the German "Etwas ist schiefgelaufen" overlay.
-    getProduct(params.handle).catch(() => undefined),
-    // Bac-water is the optional upsell — never let a transient Shopify error
-    // for it bring down the main product page.
+    // NO .catch() here on purpose: getProduct returns undefined ONLY when the
+    // product genuinely doesn't exist (empty API result), and THROWS on a
+    // fetch error/timeout. Letting a throw propagate sends the user to the
+    // retryable error page instead of a notFound() 404 that Next would cache
+    // for hours — which is exactly the "product shows 404" bug.
+    getProduct(params.handle),
+    // Bac-water is the optional upsell — never let a transient error for it
+    // bring down the main product page.
     getProduct("bacteriostatic-water-bac-water").catch(() => undefined),
   ]);
 

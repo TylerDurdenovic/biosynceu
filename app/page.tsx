@@ -1,3 +1,6 @@
+// Slow cPanel host — give the serverless function room for a cold WC fetch.
+export const maxDuration = 30;
+
 import Footer from "components/layout/footer";
 import {
   BestsellersHeader,

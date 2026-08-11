@@ -60,17 +60,23 @@ function authHeader(): string {
 
 const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
 
+// Retry budget is tuned to stay under the pages' maxDuration (30s):
+//   8s + 1.5s + 8s + 3s + 8s ≈ 28.5s worst case, ~1s on a healthy host.
+const ATTEMPTS = 3;
+const ATTEMPT_TIMEOUT = 8000;
+const BACKOFF = [1500, 3000];
+
 async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
   if (!WC_URL) throw new Error("WC_URL env var is not set");
 
   const url = `${WC_URL}${path}`;
   let lastErr: unknown;
 
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < ATTEMPTS; i++) {
     try {
       const res = await fetch(url, {
         ...init,
-        signal: AbortSignal.timeout(8000),
+        signal: AbortSignal.timeout(ATTEMPT_TIMEOUT),
         headers: {
           "Content-Type": "application/json",
           Authorization: authHeader(),
@@ -78,8 +84,10 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
         },
       });
 
-      if (RETRYABLE.has(res.status) && i < 2) {
-        await sleep(200 * (1 << i));
+      // Transient server status (503 overload, 502, 429…) — wait and retry.
+      // Shared/flaky hosts recover within a couple seconds, so back off in SECONDS.
+      if (RETRYABLE.has(res.status) && i < ATTEMPTS - 1) {
+        await sleep(BACKOFF[i] ?? 3000);
         continue;
       }
 
@@ -101,9 +109,10 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
       return res.json() as Promise<T>;
     } catch (err) {
       lastErr = err;
-      // Don't retry on timeout — the server is unreachable, retrying wastes time
-      if ((err as Error)?.name === "TimeoutError") break;
-      if (i < 2) await sleep(200 * (1 << i));
+      // Retry timeouts AND network errors too — a flaky host blips for a few
+      // seconds then recovers, so one more try usually succeeds and lets the
+      // "use cache" layer store the result (keeping WordPress off the hot path).
+      if (i < ATTEMPTS - 1) await sleep(BACKOFF[i] ?? 3000);
     }
   }
 
@@ -704,21 +713,30 @@ const ALL_COLLECTION: Collection = {
   updatedAt: new Date().toISOString(),
 };
 
+// Single cached fetch of ALL categories. Every collection helper below sources
+// its slug→id and count lookups from this ONE cached list instead of hitting
+// the WC API per-collection — turning ~10 redundant round-trips into 1.
+async function getRawCategories(): Promise<WCCategory[]> {
+  "use cache";
+  cacheTag(TAGS.collections);
+  cacheLife("hours");
+
+  if (!WC_URL) return [];
+  return wcFetch<WCCategory[]>(`/products/categories?per_page=100`);
+}
+
 export async function getCollections(): Promise<Collection[]> {
   "use cache";
   cacheTag(TAGS.collections);
   cacheLife("hours");
 
-  if (!WC_URL) return [ALL_COLLECTION];
-
-  const cats = await wcFetch<WCCategory[]>(
-    `/products/categories?per_page=100&hide_empty=true`,
-  );
+  const cats = await getRawCategories();
+  if (!cats.length) return [ALL_COLLECTION];
 
   return [
     ALL_COLLECTION,
     ...cats
-      .filter((c) => c.slug !== "uncategorized")
+      .filter((c) => c.slug !== "uncategorized" && c.count > 0)
       .map(reshapeCollection),
   ];
 }
@@ -730,12 +748,9 @@ export async function getCollection(
   cacheTag(TAGS.collections);
   cacheLife("hours");
 
-  if (!WC_URL) return undefined;
-
-  const cats = await wcFetch<WCCategory[]>(
-    `/products/categories?slug=${encodeURIComponent(handle)}`,
-  );
-  return cats[0] ? reshapeCollection(cats[0]) : undefined;
+  const cats = await getRawCategories();
+  const cat = cats.find((c) => c.slug === handle);
+  return cat ? reshapeCollection(cat) : undefined;
 }
 
 export async function getCollectionProducts({
@@ -753,13 +768,12 @@ export async function getCollectionProducts({
 
   if (!WC_URL) return [];
 
-  const cats = await wcFetch<WCCategory[]>(
-    `/products/categories?slug=${encodeURIComponent(collection)}`,
-  );
-  if (!cats.length) return [];
+  const cats = await getRawCategories();
+  const cat = cats.find((c) => c.slug === collection);
+  if (!cat) return [];
 
   const sort = sortParams(sortKey, reverse);
-  const qs = [`category=${cats[0]!.id}`, sort, "per_page=50", "status=publish"]
+  const qs = [`category=${cat.id}`, sort, "per_page=50", "status=publish"]
     .filter(Boolean)
     .join("&");
 
@@ -774,12 +788,10 @@ export async function getCollectionProductCount(
   cacheTag(TAGS.collections, TAGS.products);
   cacheLife("hours");
 
-  if (!WC_URL) return 0;
-
-  const cats = await wcFetch<WCCategory[]>(
-    `/products/categories?slug=${encodeURIComponent(collection)}`,
-  );
-  return cats[0]?.count ?? 0;
+  // Reuse the single cached categories list — the count is already on each
+  // category record, so this needs ZERO extra API calls after the first fetch.
+  const cats = await getRawCategories();
+  return cats.find((c) => c.slug === collection)?.count ?? 0;
 }
 
 // ── Pages (WordPress REST API) ────────────────────────────────────────────────
