@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+/* Class-based dark mode: dark: variants apply when any ancestor has .dark */
+@variant dark (&:where(.dark, .dark *));
+
+@plugin "@tailwindcss/container-queries";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  /* ── Brand palette ──────────────────────────────────────── */
+  --color-brand-navy:        #0B1929;
+  --color-brand-navy-mid:    #112240;
+  --color-brand-blue:        #1D4ED8;
+  --color-brand-blue-mid:    #2563EB;
+  --color-brand-blue-light:  #BFDBFE;
+  --color-brand-blue-xlight: #EFF6FF;
+  --color-brand-accent:      #06B6D4;   /* cyan science accent */
+  --color-brand-surface:     #FFFFFF;
+  --color-brand-bg:          #F8FAFC;
+  --color-brand-border:      #E2E8F0;
+  --color-brand-text:        #0F172A;
+  --color-brand-text-muted:  #64748B;
+
+  /* ── Typography ─────────────────────────────────────────── */
+  --font-sans:     var(--font-inter), system-ui, sans-serif;
+  --font-display:  var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+
+  --font-size-xs:   0.75rem;
+  --font-size-sm:   0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg:   1.125rem;
+  --font-size-xl:   1.25rem;
+  --font-size-2xl:  1.5rem;
+  --font-size-3xl:  1.875rem;
+  --font-size-4xl:  2.25rem;
+  --font-size-5xl:  3rem;
+
+  --line-height-tight:   1.2;
+  --line-height-snug:    1.375;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.625;
+
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-wide:  0.05em;
+  --letter-spacing-wider: 0.1em;
+
+  /* ── Shadows ────────────────────────────────────────────── */
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --shadow-card-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-panel: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+
+  /* ── Animations ─────────────────────────────────────────── */
+  --animate-carousel: carousel 40s linear infinite;
+  --animate-fade-up:  fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in:  fadeIn 0.3s ease forwards;
+
+  @keyframes carousel {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(10px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
+
+/* ── Reset & base ───────────────────────────────────────────── */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-brand-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Belt-and-braces guard: a single mis-sized element should never
+       produce a horizontal scrollbar on tablets or 13" laptops. */
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    overflow-x: hidden;
+  }
+
+  html.dark body {
+    background-color: #0f172a;
+    color: #f1f5f9;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: var(--letter-spacing-tight);
+    line-height: var(--line-height-tight);
+  }
+}
+
+/* ── iOS lazy-image fix ─────────────────────────────────────── */
+@supports (font: -apple-system-body) and (-webkit-appearance: none) {
+  img[loading="lazy"] {
+    clip-path: inset(0.6px);
+  }
+}
+
+/* ── Focus ring ─────────────────────────────────────────────── */
+a,
+input,
+button {
+  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--color-brand-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-brand-border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-brand-blue-light); }
+
+html.dark ::-webkit-scrollbar-track { background: #0f172a; }
+html.dark ::-webkit-scrollbar-thumb { background: #334155; }
+html.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+/* ──────────────────────────────────────────────────────────────
+   DARK MODE — Global utility overrides
+   These rules retarget Tailwind utility classes inside .dark scope so
+   the entire app gets readable dark-mode contrast without needing
+   `dark:` variants on every single component. The rules use the same
+   single-class specificity as Tailwind utilities, but appear AFTER the
+   tailwind import so they win the cascade.
+   ────────────────────────────────────────────────────────────── */
+
+/* Surfaces — turn light cards/panels into dark surfaces */
+html.dark .bg-white                         { background-color: #1e293b !important; }
+html.dark .bg-slate-50                      { background-color: #0f172a !important; }
+html.dark .bg-slate-100                     { background-color: #334155 !important; }
+html.dark .bg-blue-50                       { background-color: rgba(56, 189, 248, 0.08) !important; }
+html.dark .bg-blue-50\/50                   { background-color: rgba(56, 189, 248, 0.05) !important; }
+html.dark .bg-amber-50                      { background-color: rgba(245, 158, 11, 0.12) !important; }
+html.dark .bg-green-50                      { background-color: rgba(16, 185, 129, 0.12) !important; }
+html.dark .bg-emerald-50                    { background-color: rgba(16, 185, 129, 0.12) !important; }
+html.dark .bg-red-50                        { background-color: rgba(239, 68, 68, 0.12) !important; }
+html.dark .bg-\[\#f6f7f9\]                  { background-color: #0f172a !important; }
+html.dark .bg-\[\#F8FAFC\]                  { background-color: #0f172a !important; }
+
+/* Text — neutral slate scale */
+html.dark .text-slate-900                   { color: #f1f5f9 !important; }
+html.dark .text-slate-800                   { color: #e2e8f0 !important; }
+html.dark .text-slate-700                   { color: #cbd5e1 !important; }
+html.dark .text-slate-600                   { color: #94a3b8 !important; }
+html.dark .text-slate-500                   { color: #94a3b8 !important; }
+html.dark .text-slate-400                   { color: #64748b !important; }
+html.dark .text-black                       { color: #f1f5f9 !important; }
+
+/* Text — blue scale (used heavily in cart, footer etc) */
+html.dark .text-blue-900                    { color: #f1f5f9 !important; }
+html.dark .text-blue-800                    { color: #e2e8f0 !important; }
+html.dark .text-blue-700                    { color: #38bdf8 !important; }
+html.dark .text-blue-600                    { color: #38bdf8 !important; }
+html.dark .text-blue-500                    { color: #94a3b8 !important; }
+html.dark .text-blue-400                    { color: #64748b !important; }
+html.dark .text-blue-300                    { color: #475569 !important; }
+
+/* Borders */
+html.dark .border-slate-200                 { border-color: #334155 !important; }
+html.dark .border-slate-100                 { border-color: #1e293b !important; }
+html.dark .border-blue-100                  { border-color: #1e293b !important; }
+html.dark .border-blue-50                   { border-color: #1e293b !important; }
+html.dark .border-amber-200,
+html.dark .border-amber-100                 { border-color: rgba(245, 158, 11, 0.3) !important; }
+html.dark .border-green-200,
+html.dark .border-green-100                 { border-color: rgba(16, 185, 129, 0.3) !important; }
+html.dark .border-red-200,
+html.dark .border-red-100                   { border-color: rgba(239, 68, 68, 0.3) !important; }
+
+/* Coloured badges — keep readable text on dark tinted backgrounds */
+html.dark .text-green-700                   { color: #34d399 !important; }
+html.dark .text-green-800                   { color: #34d399 !important; }
+html.dark .text-emerald-700                 { color: #34d399 !important; }
+html.dark .text-amber-700                   { color: #fbbf24 !important; }
+html.dark .text-amber-800                   { color: #fbbf24 !important; }
+html.dark .text-amber-900                   { color: #fcd34d !important; }
+html.dark .text-amber-600                   { color: #f59e0b !important; }
+html.dark .text-red-700                     { color: #f87171 !important; }
+html.dark .text-red-600                     { color: #f87171 !important; }
+html.dark .text-red-500                     { color: #f87171 !important; }
+
+/* Hover surfaces */
+html.dark .hover\:bg-slate-50:hover         { background-color: #1e293b !important; }
+html.dark .hover\:bg-slate-100:hover        { background-color: #334155 !important; }
+html.dark .hover\:bg-blue-50:hover          { background-color: rgba(56, 189, 248, 0.1) !important; }
+html.dark .hover\:bg-white\/90:hover        { background-color: #334155 !important; }
+
+/* Hover text */
+html.dark .hover\:text-slate-700:hover      { color: #e2e8f0 !important; }
+html.dark .hover\:text-slate-900:hover      { color: #f8fafc !important; }
+html.dark .hover\:text-blue-700:hover       { color: #7dd3fc !important; }
+html.dark .hover\:text-blue-900:hover       { color: #f1f5f9 !important; }
+
+/* Inputs / placeholders */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b;
+}
+
+/* Ring offsets — make focus rings visible on dark surfaces */
+html.dark a,
+html.dark input,
+html.dark button {
+  --tw-ring-offset-color: #0f172a;
+}
+
+/* Skeleton placeholders */
+html.dark .bg-slate-200                     { background-color: #334155 !important; }
+
+/* Brand gradient buttons — stay vivid in dark mode (don't invert) */
+html.dark .from-\[\#06B6D4\]              { --tw-gradient-from: #06B6D4 !important; }
+html.dark .to-\[\#1D4ED8\]               { --tw-gradient-to:   #1D4ED8 !important; }
+
+/* Solid white "shop now" CTA on dark hero — keep crisp in dark mode */
+html.dark .bg-white.text-\[\#0B1929\]      {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+html.dark .bg-white.text-black             {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
