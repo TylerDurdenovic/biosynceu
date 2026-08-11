@@ -70,13 +70,12 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
     try {
       const res = await fetch(url, {
         ...init,
+        signal: AbortSignal.timeout(15000),
         headers: {
           "Content-Type": "application/json",
           Authorization: authHeader(),
           ...(init?.headers ?? {}),
         },
-        // Don't pass Next.js `next` options on mutations
-        ...(init?.method && init.method !== "GET" ? {} : {}),
       });
 
       if (RETRYABLE.has(res.status) && i < 2) {
