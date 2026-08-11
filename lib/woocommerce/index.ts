@@ -70,7 +70,7 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
     try {
       const res = await fetch(url, {
         ...init,
-        signal: AbortSignal.timeout(15000),
+        signal: AbortSignal.timeout(8000),
         headers: {
           "Content-Type": "application/json",
           Authorization: authHeader(),
@@ -101,6 +101,8 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
       return res.json() as Promise<T>;
     } catch (err) {
       lastErr = err;
+      // Don't retry on timeout — the server is unreachable, retrying wastes time
+      if ((err as Error)?.name === "TimeoutError") break;
       if (i < 2) await sleep(200 * (1 << i));
     }
   }
