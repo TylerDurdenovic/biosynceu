@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CreatorsPage() {
-  const products = await getProducts({ sortKey: "TITLE" });
+  const products = await getProducts({ sortKey: "TITLE" }).catch(() => []);
   const items = products.map((p) => ({ handle: p.handle, title: p.title }));
 
   return (
