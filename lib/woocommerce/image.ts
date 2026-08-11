@@ -20,10 +20,11 @@ export function shopifyImageSrcSet(
   _widths: number[] = PRODUCT_CARD_WIDTHS,
   _quality: number = 80,
 ): string {
-  // WP images don't have Shopify-style CDN srcsets.
-  // Return empty string so the browser uses the <img src> fallback, or
-  // the Next.js <Image> component's own srcset generation.
-  return src ?? "";
+  // WP images don't support Shopify-style CDN srcsets.
+  // Return "" so callers' `|| undefined` guard drops the srcSet attribute
+  // entirely — a plain URL without width descriptors is invalid srcSet syntax
+  // and causes browsers to ignore the image.
+  return "";
 }
 
 // Direct aliases in case anyone imports by the wc* name
