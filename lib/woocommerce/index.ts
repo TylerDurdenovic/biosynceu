@@ -91,6 +91,14 @@ async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
         );
       }
 
+      const ct = res.headers.get("content-type") ?? "";
+      if (!ct.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(
+          `WooCommerce returned non-JSON (${ct}) for ${path}: ${text.slice(0, 200)}`,
+        );
+      }
+
       return res.json() as Promise<T>;
     } catch (err) {
       lastErr = err;
@@ -108,6 +116,11 @@ async function wpFetch<T>(path: string): Promise<T> {
   });
   if (!res.ok)
     throw new Error(`WordPress API ${res.status} for ${path}`);
+  const ct = res.headers.get("content-type") ?? "";
+  if (!ct.includes("application/json")) {
+    const text = await res.text();
+    throw new Error(`WordPress API returned non-JSON (${ct}) for ${path}: ${text.slice(0, 200)}`);
+  }
   return res.json() as Promise<T>;
 }
 

@@ -114,7 +114,7 @@ async function WeekBestsellers() {
   ];
 
   const productResults = await Promise.all(
-    BESTSELLER_HANDLES.map((h) => getProduct(h))
+    BESTSELLER_HANDLES.map((h) => getProduct(h).catch(() => undefined))
   );
   const bestsellers = (productResults.filter(Boolean) as Product[]).slice(0, 5);
 
