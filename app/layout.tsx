@@ -1,4 +1,5 @@
 import AffiliateTracker from "components/affiliate-tracker";
+import RouteProgress from "components/route-progress";
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
 import { HideOnAdmin } from "components/layout/hide-on-admin";
@@ -14,7 +15,7 @@ import { cookies, headers } from "next/headers";
 import { Inter, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import type { Lang } from "lib/i18n/translations";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -468,6 +469,10 @@ window.smartsupp||(function(d) {
         />
       </head>
       <body className="bg-[#F8FAFC] text-[#0F172A] selection:bg-blue-100 selection:text-blue-900 antialiased">
+        {/* Top loading bar on route changes — instant "it's loading" feedback */}
+        <Suspense fallback={null}>
+          <RouteProgress />
+        </Suspense>
         <ThemeProvider>
           <LanguageProvider initialLang={initialLang}>
             <WishlistProvider>
