@@ -139,6 +139,12 @@ export type Product = {
     maxVariantPrice: Money;
     minVariantPrice: Money;
   };
+  // Original ("was") price range when the product is on sale — used to render
+  // the struck-through old price + sale badge. Null when nothing is discounted.
+  compareAtPriceRange?: {
+    maxVariantPrice: Money;
+    minVariantPrice: Money;
+  } | null;
   variants: ProductVariant[];
   featuredImage: Image;
   images: Image[];

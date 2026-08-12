@@ -217,6 +217,18 @@ function reshapeProduct(
     .map((v) => parseFloat(v.price.amount))
     .filter((n) => !isNaN(n) && n > 0);
 
+  const minPrice = prices.length ? Math.min(...prices) : 0;
+  const maxPrice = prices.length ? Math.max(...prices) : 0;
+
+  // Original ("was") prices from any on-sale variant. We only expose a
+  // compare-at range when at least one variant is genuinely discounted
+  // (regular price above the current price) so the struck-through price and
+  // sale badge only appear on real sales.
+  const compareAts = variants
+    .map((v) => (v.compareAtPrice ? parseFloat(v.compareAtPrice.amount) : NaN))
+    .filter((n) => !isNaN(n) && n > 0);
+  const onSale = compareAts.length > 0 && Math.max(...compareAts) > minPrice;
+
   const images: Image[] = product.images.length
     ? product.images.map((img) => reshapeImage(img, product.name))
     : [PLACEHOLDER_IMAGE];
@@ -231,9 +243,15 @@ function reshapeProduct(
     descriptionHtml: product.description || product.short_description,
     options: reshapeOptions(product),
     priceRange: {
-      minVariantPrice: money(prices.length ? Math.min(...prices) : 0),
-      maxVariantPrice: money(prices.length ? Math.max(...prices) : 0),
+      minVariantPrice: money(minPrice),
+      maxVariantPrice: money(maxPrice),
     },
+    compareAtPriceRange: onSale
+      ? {
+          minVariantPrice: money(Math.min(...compareAts)),
+          maxVariantPrice: money(Math.max(...compareAts)),
+        }
+      : null,
     variants,
     featuredImage: images[0]!,
     images,

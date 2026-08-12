@@ -552,11 +552,24 @@ function PriceDisplay({ product, ts }: { product: Product; ts: ShopT }) {
     return <span className="text-slate-400">{ts.outOfStock}</span>;
   }
 
+  // Struck-through original price when on sale. We show it only for a single
+  // effective price (min === max) so a discounted product reads cleanly as
+  // "€100 €50"; mixed-price ranges just show the range to avoid confusion.
+  const compareMax = product.compareAtPriceRange
+    ? parseFloat(product.compareAtPriceRange.maxVariantPrice.amount)
+    : 0;
+  const showCompare = min === max && compareMax > min;
+
   return (
     <span className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+      {showCompare && (
+        <span className="whitespace-nowrap text-sm font-medium text-slate-400 line-through">
+          {formatPrice(product.compareAtPriceRange!.maxVariantPrice.amount, currency)}
+        </span>
+      )}
       {/* Current price (or range) — keep on its own line so it never wraps
           mid-range like "€149.90 – \n €329.90" */}
-      <span className="whitespace-nowrap">
+      <span className={`whitespace-nowrap ${showCompare ? "font-bold text-red-600" : ""}`}>
         {min === max
           ? formatPrice(minVariantPrice.amount, currency)
           : `${formatPrice(minVariantPrice.amount, currency)} – ${formatPrice(maxVariantPrice.amount, currency)}`}
@@ -646,6 +659,17 @@ function ProductCard({
                   Pre-order
                 </span>
               )}
+            {/* Sale badge with the discount percentage — language-neutral. */}
+            {available && product.compareAtPriceRange && (() => {
+              const now = parseFloat(product.priceRange.minVariantPrice.amount);
+              const was = parseFloat(product.compareAtPriceRange.maxVariantPrice.amount);
+              const pct = was > now ? Math.round(((was - now) / was) * 100) : 0;
+              return pct > 0 ? (
+                <span className="rounded bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                  −{pct}%
+                </span>
+              ) : null;
+            })()}
           </div>
           {/* Wishlist heart */}
           <WishlistHeart
