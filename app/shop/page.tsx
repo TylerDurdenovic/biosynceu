@@ -591,16 +591,14 @@ function ProductCard({
 }) {
   const available = product.availableForSale;
 
-  /* Find a single concise dose/variant indicator (just one short token) */
+  /* Primary variant axis (e.g. "Dose") and ALL its values. The shop list never
+     fetches variations, so we read the option values straight off the product's
+     attributes — this is what lets a card advertise every dose (5mg, 10mg…)
+     instead of just the first one. */
   const meaningfulOpts = product.options.filter(
     (opt) => opt.name.toLowerCase() !== "title"
   );
-  const hasMultipleVariants = product.variants.length > 1;
-  /* Show ONE small dose/strength label only when there's a single variant */
-  const singleVariantLabel =
-    !hasMultipleVariants && meaningfulOpts.length > 0 && meaningfulOpts[0]?.values[0]
-      ? meaningfulOpts[0].values[0]
-      : null;
+  const variantValues: string[] = meaningfulOpts[0]?.values ?? [];
 
   // First 4 cards are above the fold on desktop / 2 on mobile — preload them
   // eagerly so the LCP image isn't held up by lazy loading.
@@ -691,10 +689,17 @@ function ProductCard({
             {product.title}
           </h3>
 
-          {singleVariantLabel && (
-            <span className="mt-1.5 inline-block text-xs font-medium text-slate-500">
-              {singleVariantLabel}
-            </span>
+          {variantValues.length > 0 && (
+            <div className="mt-1.5 flex flex-wrap gap-1">
+              {variantValues.map((v) => (
+                <span
+                  key={v}
+                  className="rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[11px] font-medium text-slate-600"
+                >
+                  {v}
+                </span>
+              ))}
+            </div>
           )}
 
           <p className="mt-1.5 text-base font-bold text-slate-900">
