@@ -562,6 +562,31 @@ export const translations = {
         "As soon as your payment arrives we confirm your order and ship within 24h. You'll get an email with tracking.",
       paySetupNotice:
         "Bank details are not configured yet. Set the NEXT_PUBLIC_BANK_* environment variables.",
+      // ── keys used by the current order-confirmed page component ──
+      confirmedHeading: "Order #{n} confirmed!",
+      receivedHeading: "Order received!",
+      confirmationSentTo: "A confirmation has been sent to {email}.",
+      thankYou: "Thank you for your order.",
+      summaryTitle: "Order summary",
+      qty: "Qty",
+      discountLabel: "Discount",
+      shippingLabel: "Shipping",
+      totalLabel: "Total",
+      actionTitle: "Action required — complete your payment",
+      actionIntro:
+        "Please make the bank transfer to the following account. Orders are processed after payment. Use only your order ID as reference.",
+      ibanNotice:
+        "If your bank shows that the IBAN does not match the account holder's name, please ignore it. This is a known issue, and the transfer will arrive safely.",
+      refLabel: "Payment reference",
+      refHint:
+        "Include this reference so we can match your transfer to your order.",
+      amountLabel: "Amount to transfer",
+      bankName: "Bank name",
+      bankEmailed: "Bank details will be emailed to you shortly.",
+      dispatchNote:
+        "Orders are dispatched once payment is confirmed (typically 1–2 business days). You will receive a shipping confirmation email.",
+      deliveryTo: "Delivery to",
+      copyBtn: "Copy",
     },
     calculator: {
       badge: "Research Tool",
@@ -1421,6 +1446,31 @@ export const translations = {
         "Sobald Ihre Zahlung eingeht, bestätigen wir Ihre Bestellung und versenden innerhalb von 24 Stunden. Sie erhalten eine E-Mail mit Sendungsverfolgung.",
       paySetupNotice:
         "Bankdaten sind noch nicht konfiguriert. Setzen Sie die NEXT_PUBLIC_BANK_*-Umgebungsvariablen.",
+      // ── keys used by the current order-confirmed page component ──
+      confirmedHeading: "Bestellung #{n} bestätigt!",
+      receivedHeading: "Bestellung erhalten!",
+      confirmationSentTo: "Eine Bestätigung wurde an {email} gesendet.",
+      thankYou: "Vielen Dank für Ihre Bestellung.",
+      summaryTitle: "Bestellübersicht",
+      qty: "Menge",
+      discountLabel: "Rabatt",
+      shippingLabel: "Versand",
+      totalLabel: "Gesamt",
+      actionTitle: "Aktion erforderlich — schließen Sie Ihre Zahlung ab",
+      actionIntro:
+        "Bitte zahlen Sie per Banküberweisung. Bestellungen werden nach Zahlungseingang bearbeitet. Geben Sie als Verwendungszweck ausschließlich Ihre Bestellnummer an.",
+      ibanNotice:
+        "Falls Ihre Bank anzeigt, dass die IBAN nicht mit dem Namen des Kontoinhabers übereinstimmt, können Sie dies ignorieren. Dies ist ein bekanntes Problem, und die Überweisung wird sicher ankommen.",
+      refLabel: "Verwendungszweck",
+      refHint:
+        "Geben Sie diesen Verwendungszweck an, damit wir Ihre Überweisung Ihrer Bestellung zuordnen können.",
+      amountLabel: "Zu überweisender Betrag",
+      bankName: "Bankname",
+      bankEmailed: "Die Bankdaten werden Ihnen in Kürze per E-Mail zugesandt.",
+      dispatchNote:
+        "Bestellungen werden nach Zahlungseingang versendet (in der Regel 1–2 Werktage). Sie erhalten eine Versandbestätigung per E-Mail.",
+      deliveryTo: "Lieferung an",
+      copyBtn: "Kopieren",
     },
     calculator: {
       badge: "Forschungswerkzeug",
