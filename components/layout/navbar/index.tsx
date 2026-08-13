@@ -4,7 +4,6 @@ import { LanguageToggle, LanguageToggleMini } from "components/language-toggle";
 import { getMenu, getProduct, getProducts } from "lib/woocommerce";
 import { Menu } from "lib/woocommerce/types";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-import { isAnabolic } from "lib/departments";
 import type { ShopMenuProduct } from "lib/shop-groups";
 import Image from "next/image";
 import Link from "next/link";
@@ -47,7 +46,7 @@ export async function Navbar() {
   // live in their own Anabolics & PCT department, surfaced as a separate
   // banner in the mega-menu).
   const shopProducts: ShopMenuProduct[] = allProducts
-    .filter((p) => !p.tags.includes(HIDDEN_PRODUCT_TAG) && !isAnabolic(p))
+    .filter((p) => !p.tags.includes(HIDDEN_PRODUCT_TAG))
     .map((p) => ({
       handle: p.handle,
       title: p.title,

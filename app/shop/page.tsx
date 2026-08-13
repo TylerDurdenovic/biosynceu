@@ -16,7 +16,6 @@ import {
 import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
 import { groupedAllOrder, isPen } from "lib/product-category";
-import { isAnabolic } from "lib/departments";
 import { baseUrl } from "lib/utils";
 
 /** Synthetic collection handle for the Pens filter (no Shopify collection). */
@@ -768,18 +767,17 @@ export default async function ShopPage(props: {
   // All view the page list already IS the full catalogue, so reuse it.
   const fullList: Product[] = allProductsList ?? (!activeCollection ? pageProductsRaw : []);
 
-  // Product list — ALWAYS exclude anabolic-tagged products (steroids/PCT/AI)
-  // so they never appear in the catalogue. (HGH is now shown per owner request.)
-  let products: Product[] = (
-    isPensView ? (allProductsList ?? pageProductsRaw).filter(isPen) : pageProductsRaw
-  ).filter((p) => !isAnabolic(p));
+  // Full catalogue — HGH and anabolics are now shown per owner request.
+  let products: Product[] = isPensView
+    ? (allProductsList ?? pageProductsRaw).filter(isPen)
+    : pageProductsRaw;
   if (!activeCollection && !sort) {
     products = groupedAllOrder(products);
   }
 
-  const peptidesAllCount = fullList.filter((p) => !isAnabolic(p)).length;
+  const peptidesAllCount = fullList.length;
   const allProductsCount = peptidesAllCount || products.length;
-  const pensCount = fullList.filter((p) => isPen(p) && !isAnabolic(p)).length;
+  const pensCount = fullList.filter((p) => isPen(p)).length;
 
   const collectionCounts: Record<string, number> = {};
   visibleCollections.forEach((c, i) => {

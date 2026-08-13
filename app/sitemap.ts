@@ -1,4 +1,3 @@
-import { isAnabolic } from "lib/departments";
 import { GUIDES } from "lib/guides-data";
 import { getPages, getProducts } from "lib/woocommerce";
 import { baseUrl, validateEnvironmentVariables } from "lib/utils";
@@ -107,9 +106,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const productsPromise = getProducts({}).then((products) =>
     products
-      // Keep anabolic-tagged items out of the sitemap. (HGH is now included
-      // per owner request.)
-      .filter((product) => !isAnabolic(product))
+      // HGH and anabolics are now included per owner request.
       .map((product) => ({
       url: `${baseUrl}/product/${product.handle}`,
       lastModified: product.updatedAt,

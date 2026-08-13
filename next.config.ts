@@ -17,8 +17,6 @@ export default {
       { source: "/injectables", destination: "/shop", permanent: false },
       { source: "/pct", destination: "/shop", permanent: false },
       { source: "/ai", destination: "/shop", permanent: false },
-      // Calculator + pen guide removed — redirect old links.
-      { source: "/peptide-calculator", destination: "/", permanent: false },
       { source: "/guides/pen-guide", destination: "/guides", permanent: false },
     ];
   },
