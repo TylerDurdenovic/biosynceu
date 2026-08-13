@@ -15,7 +15,7 @@ import {
 } from "lib/woocommerce";
 import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
-import { groupedAllOrder, isPen, isHgh } from "lib/product-category";
+import { groupedAllOrder, isPen } from "lib/product-category";
 import { isAnabolic } from "lib/departments";
 import { baseUrl } from "lib/utils";
 
@@ -769,15 +769,15 @@ export default async function ShopPage(props: {
   const fullList: Product[] = allProductsList ?? (!activeCollection ? pageProductsRaw : []);
 
   // Product list — ALWAYS exclude anabolic-tagged products (steroids/PCT/AI)
-  // and HGH/somatropin so they never appear in the catalogue.
+  // so they never appear in the catalogue. (HGH is now shown per owner request.)
   let products: Product[] = (
     isPensView ? (allProductsList ?? pageProductsRaw).filter(isPen) : pageProductsRaw
-  ).filter((p) => !isAnabolic(p) && !isHgh(p));
+  ).filter((p) => !isAnabolic(p));
   if (!activeCollection && !sort) {
     products = groupedAllOrder(products);
   }
 
-  const peptidesAllCount = fullList.filter((p) => !isAnabolic(p) && !isHgh(p)).length;
+  const peptidesAllCount = fullList.filter((p) => !isAnabolic(p)).length;
   const allProductsCount = peptidesAllCount || products.length;
   const pensCount = fullList.filter((p) => isPen(p) && !isAnabolic(p)).length;
 

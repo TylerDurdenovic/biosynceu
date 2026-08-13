@@ -20,8 +20,6 @@ export default {
       // Calculator + pen guide removed — redirect old links.
       { source: "/peptide-calculator", destination: "/", permanent: false },
       { source: "/guides/pen-guide", destination: "/guides", permanent: false },
-      // HGH / somatropin held off the ad-facing site — send its page to /shop.
-      { source: "/product/hg-research-peptide", destination: "/shop", permanent: false },
     ];
   },
   images: {
