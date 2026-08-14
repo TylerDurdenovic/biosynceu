@@ -121,6 +121,16 @@ export default function OrderConfirmedContent({
           </div>
         )}
 
+        {/* ── Paid-by-card disclaimer (sits above the bank-transfer box) ── */}
+        <div className="flex items-start gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 dark:border-emerald-500/30 dark:bg-emerald-900/15">
+          <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-xs font-medium leading-relaxed text-emerald-800 dark:text-emerald-300">
+            {oc.cardPaidNote}
+          </p>
+        </div>
+
         {/* ── ACTION REQUIRED: bank transfer ── */}
         <div className="overflow-hidden rounded-2xl border-2 border-amber-300 bg-amber-50 shadow-sm dark:border-amber-500/40 dark:bg-amber-900/10">
           <div className="bg-amber-100 px-6 py-4 dark:bg-amber-900/20">

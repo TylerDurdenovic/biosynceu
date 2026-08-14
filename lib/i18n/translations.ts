@@ -355,7 +355,7 @@ export const translations = {
       empty: "Your cart is empty.",
       emptySub: "Add items to get started.",
       continueShopping: "Continue Shopping",
-      checkout: "Pay by Bank",
+      checkout: "Pay via Card/Bank",
       total: "Total",
       taxesIncluded: "Taxes",
       shipping: "Shipping",
@@ -587,6 +587,8 @@ export const translations = {
         "Orders are dispatched once payment is confirmed (typically 1–2 business days). You will receive a shipping confirmation email.",
       deliveryTo: "Delivery to",
       copyBtn: "Copy",
+      cardPaidNote:
+        "Already paid by card? Your payment is complete — you can ignore the bank transfer details below.",
     },
     calculator: {
       badge: "Research Tool",
@@ -1234,7 +1236,7 @@ export const translations = {
       empty: "Ihr Warenkorb ist leer.",
       emptySub: "Fügen Sie Artikel hinzu, um zu beginnen.",
       continueShopping: "Weiter einkaufen",
-      checkout: "Bezahlen mit Bank",
+      checkout: "Mit Karte/Bank bezahlen",
       total: "Gesamt",
       taxesIncluded: "MwSt.",
       shipping: "Versand",
@@ -1471,6 +1473,8 @@ export const translations = {
         "Bestellungen werden nach Zahlungseingang versendet (in der Regel 1–2 Werktage). Sie erhalten eine Versandbestätigung per E-Mail.",
       deliveryTo: "Lieferung an",
       copyBtn: "Kopieren",
+      cardPaidNote:
+        "Bereits mit Karte bezahlt? Ihre Zahlung ist abgeschlossen — Sie können die untenstehenden Überweisungsdaten ignorieren.",
     },
     calculator: {
       badge: "Forschungswerkzeug",
