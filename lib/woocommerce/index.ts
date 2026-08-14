@@ -851,6 +851,7 @@ export async function getMenu(_handle: string): Promise<Menu[]> {
     { title: "Home", path: "/" },
     { title: "Shop", path: "/shop" },
     { title: "Lab Results", path: "/lab-results" },
+    { title: "Calculator", path: "/peptide-calculator" },
     { title: "Contact Us", path: "/contact" },
   ];
 }

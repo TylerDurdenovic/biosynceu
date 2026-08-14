@@ -23,6 +23,8 @@ export function WaitlistPopup() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (localStorage.getItem(SEEN_KEY)) return;
+    // Don't stack on top of the SHOP10 discount popup on a first visit.
+    if (sessionStorage.getItem("bsl_promo_active")) return;
     const timer = setTimeout(() => setOpen(true), 5000);
     fetch("/api/waitlist")
       .then((r) => r.json())

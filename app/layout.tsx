@@ -1,4 +1,5 @@
 import AffiliateTracker from "components/affiliate-tracker";
+import { DiscountPopup } from "components/discount-popup";
 import RouteProgress from "components/route-progress";
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
@@ -486,6 +487,11 @@ window.smartsupp||(function(d) {
                 <main className="min-h-screen">{children}</main>
                 <HideOnAdmin>
                   <SupportButton />
+                </HideOnAdmin>
+                {/* SHOP10 10%-off welcome popup — first visit only, and it
+                    suppresses the waitlist popup so the two never stack. */}
+                <HideOnAdmin>
+                  <DiscountPopup />
                 </HideOnAdmin>
                 {/* V2 pen waiting-list popup. Kill-switch: set
                     NEXT_PUBLIC_WAITLIST_POPUP=off before pointing Google Ads at

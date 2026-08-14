@@ -16,10 +16,13 @@ import {
 import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
 import { groupedAllOrder, isPen } from "lib/product-category";
+import { isAnabolic } from "lib/departments";
 import { baseUrl } from "lib/utils";
 
 /** Synthetic collection handle for the Pens filter (no Shopify collection). */
 const PENS_HANDLE = "pens";
+/** Synthetic collection handle for the Anabolics & PCT filter. */
+const ANABOLICS_HANDLE = "anabolics";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -100,6 +103,15 @@ const BENEFIT_AREAS: BenefitArea[] = [
     labelDe: "Pens",
     gradient: "from-pink-400 to-rose-500",
     iconPath: "M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125",
+  },
+  {
+    // Synthetic "Anabolics & PCT" department — filtered by anabolic tag rather
+    // than a WooCommerce collection, kept separate from the research peptides.
+    handle: ANABOLICS_HANDLE,
+    labelEn: "Anabolics & PCT",
+    labelDe: "Anabolika & PCT",
+    gradient: "from-red-500 to-rose-600",
+    iconPath: "M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z",
   },
 ];
 
@@ -741,10 +753,14 @@ export default async function ShopPage(props: {
     (c) => c.handle && !c.handle.startsWith("hidden")
   );
 
-  // "Pens" is a synthetic collection (no Shopify collection) — filtered from
-  // the full catalogue by handle/title rather than fetched by collection.
+  // "Pens" and "Anabolics" are synthetic collections (no WooCommerce category)
+  // — filtered from the full catalogue rather than fetched by collection.
   const isPensView = activeCollection === PENS_HANDLE;
-  const realCollection = activeCollection && !isPensView ? activeCollection : undefined;
+  const isAnabolicsView = activeCollection === ANABOLICS_HANDLE;
+  const realCollection =
+    activeCollection && !isPensView && !isAnabolicsView
+      ? activeCollection
+      : undefined;
 
   /* Fetch in parallel:
      - main product list for the visible page
@@ -767,17 +783,23 @@ export default async function ShopPage(props: {
   // All view the page list already IS the full catalogue, so reuse it.
   const fullList: Product[] = allProductsList ?? (!activeCollection ? pageProductsRaw : []);
 
-  // Full catalogue — HGH and anabolics are now shown per owner request.
+  // Full catalogue — HGH and anabolics are shown per owner request.
   let products: Product[] = isPensView
     ? (allProductsList ?? pageProductsRaw).filter(isPen)
-    : pageProductsRaw;
+    : isAnabolicsView
+      ? (allProductsList ?? pageProductsRaw).filter(isAnabolic)
+      : pageProductsRaw;
   if (!activeCollection && !sort) {
-    products = groupedAllOrder(products);
+    // Nice placement on the default "All" view: research peptides first (in the
+    // curated order), then the anabolics grouped together at the end.
+    const peptides = groupedAllOrder(products.filter((p) => !isAnabolic(p)));
+    const roids = products.filter((p) => isAnabolic(p));
+    products = [...peptides, ...roids];
   }
 
-  const peptidesAllCount = fullList.length;
-  const allProductsCount = peptidesAllCount || products.length;
+  const allProductsCount = fullList.length || products.length;
   const pensCount = fullList.filter((p) => isPen(p)).length;
+  const anabolicsCount = fullList.filter((p) => isAnabolic(p)).length;
 
   const collectionCounts: Record<string, number> = {};
   visibleCollections.forEach((c, i) => {
@@ -786,9 +808,11 @@ export default async function ShopPage(props: {
 
   const activeTitle = isPensView
     ? "Pens"
-    : activeCollection
-      ? (visibleCollections.find((c) => c.handle === activeCollection)?.title ?? "Collection")
-      : ts.allProducts;
+    : isAnabolicsView
+      ? "Anabolics & PCT"
+      : activeCollection
+        ? (visibleCollections.find((c) => c.handle === activeCollection)?.title ?? "Collection")
+        : ts.allProducts;
 
   // ── Structured data ───────────────────────────────────────────────
   // BreadcrumbList → drives the Home › Shop › {Collection} trail in SERPs.

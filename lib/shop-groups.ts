@@ -13,21 +13,27 @@ export type ShopGroupKey =
   | "growth"
   | "weight"
   | "focusLongevity"
-  | "aesthetics";
+  | "aesthetics"
+  | "anabolics";
 
-/** Display order of the columns, left → right. */
+/** Display order of the columns, left → right. Anabolics sit last, in their
+ *  own column, separated from the research peptides. */
 export const SHOP_GROUP_ORDER: ShopGroupKey[] = [
   "healing",
   "growth",
   "weight",
   "focusLongevity",
   "aesthetics",
+  "anabolics",
 ];
 
 export type ShopMenuProduct = {
   handle: string;
   title: string;
   available: boolean;
+  /** True for anabolic-tagged products (steroids/PCT/AI) — routes them into
+   *  their own "Anabolics & PCT" column instead of a peptide theme. */
+  anabolic?: boolean;
 };
 
 /** Lower number = higher up within its column (popular items first). */
@@ -95,9 +101,11 @@ export function groupShopProducts(
     weight: [],
     focusLongevity: [],
     aesthetics: [],
+    anabolics: [],
   };
   for (const p of products) {
-    out[classifyProduct(p)].push(p);
+    // Anabolics always go to their own column, regardless of name keywords.
+    out[p.anabolic ? "anabolics" : classifyProduct(p)].push(p);
   }
   for (const key of SHOP_GROUP_ORDER) {
     out[key].sort((a, b) => {
