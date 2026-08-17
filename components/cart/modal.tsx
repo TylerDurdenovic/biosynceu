@@ -204,13 +204,18 @@ function UpsellBanner({
   addCartItem: (variant: ProductVariant, product: Product) => void;
 }) {
   const { t } = useLanguage();
-  // Prefer the 3 ml variant; fall back to the first variant
+  // Always add the 3 ml variant. Normalise the option value (lowercase + strip
+  // spaces) so "3ml", "3 ml", "3ML" all match — WooCommerce stores whatever the
+  // owner typed. Only fall back to the first variant if there's no 3 ml option.
+  const norm = (s: string) => s.toLowerCase().replace(/\s+/g, "");
   const targetVariant =
     product.variants.find((v) =>
-      v.selectedOptions.some(
-        (o) => o.name.toLowerCase() === "dose" && o.value === "3ml"
-      )
-    ) ?? product.variants[0];
+      v.selectedOptions.some((o) => norm(o.value) === "3ml"),
+    ) ??
+    product.variants.find((v) =>
+      v.selectedOptions.some((o) => norm(o.value).includes("3ml")),
+    ) ??
+    product.variants[0];
 
   const [message, formAction] = useActionState(addItem, null);
   const addItemAction = formAction.bind(null, { variantId: targetVariant?.id, quantity: 1 });
