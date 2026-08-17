@@ -127,12 +127,13 @@ export async function generateMetadata(props: {
     ? title
     : `${product.title} — ${priceLabel} | BioSyncLabs`;
 
-  // Description: lead with price + purity + shipping for share previews.
-  const baseDescription = product.seo.description || product.description;
+  // Description: lead with the product name + brand (best for branded searches
+  // like "biosynclabs bac water"), then the merchant copy or a rich fallback.
+  const baseDescription = (product.seo.description || product.description || "").trim();
   const description = truncate(
-    baseDescription
-      ? `${priceLabel} · ${baseDescription}`
-      : `Buy ${product.title} from BioSyncLabs — ${priceLabel}. Research-grade peptide, ≥99% HPLC purity, Certificate of Analysis available online. Fast EU shipping from Germany.`,
+    baseDescription.length > 30
+      ? `${product.title} — ${priceLabel} at BioSyncLabs. ${baseDescription}`
+      : `${product.title} — ${priceLabel} at BioSyncLabs. Research-grade quality, ≥99% HPLC purity, Certificate of Analysis available online. Fast tracked EU shipping from Germany.`,
   );
 
   const ogImage = imageUrl
@@ -153,19 +154,17 @@ export async function generateMetadata(props: {
       canonical: `/product/${product.handle}`,
     },
     robots: {
-      // Stay indexable/crawlable (ad landing pages must be reachable), but
-      // suppress the search snippet + image preview so research-use/mechanism
-      // wording and vial imagery don't surface in Google results for this niche.
+      // Full rich-result eligibility: let Google show the product's description
+      // snippet and a large image preview so branded searches (e.g. "biosynclabs
+      // bac water") return a proper, clickable result with title + image + price.
       index: indexable,
       follow: indexable,
-      nosnippet: true,
-      noimageindex: true,
       googleBot: {
         index: indexable,
         follow: indexable,
-        noimageindex: true,
-        "max-image-preview": "none",
-        "max-snippet": 0,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
       },
     },
     openGraph: {
