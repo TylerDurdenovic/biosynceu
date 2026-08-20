@@ -36,7 +36,7 @@ export function RelatedProductsSection({ products }: { products: Product[] }) {
             <Link
               className="relative h-full w-full"
               href={`/product/${product.handle}`}
-              prefetch={true}
+              prefetch={false}
             >
               <GridTileImage
                 alt={product.title}

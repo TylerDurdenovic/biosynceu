@@ -620,7 +620,7 @@ function ProductCard({
     <div className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all hover:border-slate-300 hover:shadow-md">
       <Link
         href={`/product/${product.handle}`}
-        prefetch={true}
+        prefetch={false}
         className="flex-1"
       >
         {/* Image */}

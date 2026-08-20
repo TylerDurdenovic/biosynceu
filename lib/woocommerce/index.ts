@@ -60,11 +60,13 @@ function authHeader(): string {
 
 const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
 
-// Retry budget is tuned to stay under the pages' maxDuration (30s):
-//   8s + 1.5s + 8s + 3s + 8s ≈ 28.5s worst case, ~1s on a healthy host.
-const ATTEMPTS = 3;
-const ATTEMPT_TIMEOUT = 8000;
-const BACKOFF = [1500, 3000];
+// Retry budget — kept tight so a slow/unreachable backend fails fast instead
+// of hanging a page render (which makes the whole site feel frozen):
+//   6s + 0.8s + 6s ≈ 12.8s worst case, ~0.3s on a healthy host. Warm requests
+// are served from the "use cache" layer and never hit the network at all.
+const ATTEMPTS = 2;
+const ATTEMPT_TIMEOUT = 6000;
+const BACKOFF = [800];
 
 async function wcFetch<T>(path: string, init?: RequestInit): Promise<T> {
   if (!WC_URL) throw new Error("WC_URL env var is not set");

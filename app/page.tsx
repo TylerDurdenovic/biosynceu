@@ -147,7 +147,7 @@ async function WeekBestsellers() {
             <Link
               key={product.handle}
               href={`/product/${product.handle}`}
-              prefetch={true}
+              prefetch={false}
               className="group block rounded-xl border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600"
             >
               <div className="relative aspect-square overflow-hidden rounded-t-xl bg-slate-50 dark:bg-slate-700">

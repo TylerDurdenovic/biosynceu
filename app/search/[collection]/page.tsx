@@ -51,7 +51,7 @@ function ProductCard({
       {/* Clickable image + info */}
       <Link
         href={`/product/${product.handle}`}
-        prefetch={true}
+        prefetch={false}
         className="flex-1"
       >
         <div className="relative aspect-square overflow-hidden rounded-t-lg bg-slate-50">
