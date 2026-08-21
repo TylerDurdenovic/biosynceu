@@ -15,14 +15,14 @@ import {
 } from "lib/woocommerce";
 import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
-import { groupedAllOrder, isPen } from "lib/product-category";
+import { groupedAllOrder, isPen, isAccessory } from "lib/product-category";
 import { isAnabolic } from "lib/departments";
 import { baseUrl } from "lib/utils";
 
 /** Synthetic collection handle for the Pens filter (no Shopify collection). */
 const PENS_HANDLE = "pens";
 /** Synthetic collection handle for the Anabolics & PCT filter. */
-const ANABOLICS_HANDLE = "anabolics";
+const ANABOLICS_HANDLE = "steroids";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -790,11 +790,25 @@ export default async function ShopPage(props: {
       ? (allProductsList ?? pageProductsRaw).filter(isAnabolic)
       : pageProductsRaw;
   if (!activeCollection && !sort) {
-    // Nice placement on the default "All" view: research peptides first (in the
-    // curated order), then the anabolics grouped together at the end.
-    const peptides = groupedAllOrder(products.filter((p) => !isAnabolic(p)));
-    const roids = products.filter((p) => isAnabolic(p));
-    products = [...peptides, ...roids];
+    // Default "All" view order: Pens → Vials → Steroids → Accessories.
+    // Each product lands in exactly one bucket (anabolic wins, then pen, then
+    // accessory, else it's a regular vial).
+    const pens: Product[] = [];
+    const vials: Product[] = [];
+    const steroids: Product[] = [];
+    const accessories: Product[] = [];
+    for (const p of products) {
+      if (isAnabolic(p)) steroids.push(p);
+      else if (isPen(p)) pens.push(p);
+      else if (isAccessory(p)) accessories.push(p);
+      else vials.push(p);
+    }
+    products = [
+      ...groupedAllOrder(pens),
+      ...groupedAllOrder(vials),
+      ...steroids,
+      ...accessories,
+    ];
   }
 
   const allProductsCount = fullList.length || products.length;
