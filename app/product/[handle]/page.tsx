@@ -1,6 +1,11 @@
-// Slow cPanel host — give the serverless function room for a cold WC fetch
-// before Vercel kills it (default is often 10-15s, shorter than our 20s fetch).
+// Give the function room for a cold WC fetch before Vercel kills it.
 export const maxDuration = 30;
+// ISR: render once, serve the whole page from Vercel's edge cache, and
+// regenerate in the background every 5 minutes. This is what makes product
+// pages load instantly even while the WooCommerce backend is slow — the slow
+// fetch happens once per window, not on every visit. (Product webhooks also
+// bust the cache via revalidateTag on change.)
+export const revalidate = 300;
 
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
@@ -199,12 +204,12 @@ export async function generateMetadata(props: {
 
 export default async function ProductPage(props: {
   params: Promise<{ handle: string }>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const [params, rawSearch] = await Promise.all([
-    props.params,
-    props.searchParams,
-  ]);
+  // NOTE: we intentionally do NOT read searchParams here. Reading them would
+  // force every product page to render dynamically (and hit the slow backend
+  // on every visit). The ?dose= pre-selection is applied on the client instead
+  // (see ProductOptionsProvider), which lets this page cache at the edge.
+  const params = await props.params;
   const [product, bacWater] = await Promise.all([
     // NO .catch() here on purpose: getProduct returns undefined ONLY when the
     // product genuinely doesn't exist (empty API result), and THROWS on a
@@ -217,17 +222,10 @@ export default async function ProductPage(props: {
     getProduct("bacteriostatic-water-bac-water").catch(() => undefined),
   ]);
 
-  // Build initial selected options from URL (e.g. ?dose=10mg → { dose: "10mg" })
-  const initialSelected: Record<string, string> = {};
-  if (rawSearch && product) {
-    product.options.forEach((opt) => {
-      const key = opt.name.toLowerCase();
-      const val = rawSearch[key];
-      if (typeof val === "string") initialSelected[key] = val;
-    });
-  }
-
   if (!product) return notFound();
+
+  // Variant pre-selection now happens on the client from the URL.
+  const initialSelected: Record<string, string> = {};
 
   const productUrl = `${baseUrl}/product/${product.handle}`;
   // priceValidUntil ~1 year out — required by Google for offer rich results.

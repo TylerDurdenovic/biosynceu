@@ -4,6 +4,7 @@ import { ProductOption, ProductVariant } from "lib/woocommerce/types";
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -37,6 +38,26 @@ export function ProductOptionsProvider({
   const [selected, setSelected] =
     useState<Record<string, string>>(initialSelected);
   const [quantity, setQuantity] = useState(1);
+
+  // Apply a variant pre-selection from the URL (e.g. ?dose=10mg) on the CLIENT.
+  // Doing this here — instead of reading searchParams on the server — lets the
+  // product page render fully static and cache at the edge, so it loads
+  // instantly instead of hitting the slow backend on every visit.
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const preset: Record<string, string> = {};
+      options.forEach((opt) => {
+        const val = params.get(opt.name.toLowerCase());
+        if (val) preset[opt.name.toLowerCase()] = val;
+      });
+      if (Object.keys(preset).length) {
+        setSelected((prev) => ({ ...prev, ...preset }));
+      }
+    } catch {
+      /* no-op */
+    }
+  }, [options]);
 
   const setOption = (name: string, value: string) => {
     setSelected((prev) => ({ ...prev, [name.toLowerCase()]: value }));
