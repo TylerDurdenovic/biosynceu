@@ -414,6 +414,14 @@ export default async function RootLayout({
   return (
     <html lang={initialLang} className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <head>
+        {/* Kill any stale service worker / cache from a previous version of the
+            site so returning customers can't get stuck on the old storefront. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.unregister();});}).catch(function(){});}if(window.caches&&caches.keys){caches.keys().then(function(ks){ks.forEach(function(k){caches.delete(k);});}).catch(function(){});}}catch(e){}})();",
+          }}
+        />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=AW-18133261732"
