@@ -46,6 +46,7 @@ export function FooterLinks() {
         { label: t.footer.company.contact, href: FOOTER_LINK_PATHS.company.contact },
         { label: t.footer.company.researchGuides, href: "/guides" },
         { label: t.calculator.title, href: "/peptide-calculator" },
+        { label: t.penCalculator.title, href: "/pen-calculator" },
         { label: t.footer.company.trackOrder, href: "/track" },
         { label: t.footer.company.wishlist, href: "/wishlist" },
       ],

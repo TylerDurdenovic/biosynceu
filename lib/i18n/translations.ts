@@ -669,6 +669,7 @@ export const translations = {
       },
       pen: {
         totalDosage: "Total dosage in pen",
+        totalClicks: "Clicks in a full pen",
         desiredDosage: "Desired dosage",
         sliderHint: "drag to scrub",
         sliderMin: "0 mcg",
@@ -1556,6 +1557,7 @@ export const translations = {
       },
       pen: {
         totalDosage: "Gesamtdosis im Pen",
+        totalClicks: "Klicks in einem vollen Pen",
         desiredDosage: "Gewünschte Dosis",
         sliderHint: "ziehen zum Anpassen",
         sliderMin: "0 mcg",
