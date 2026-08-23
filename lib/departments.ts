@@ -9,7 +9,7 @@ import type { Product } from "lib/woocommerce/types";
 export const ANABOLIC_TAGS = ["injectables", "steroids", "pct", "ai"] as const;
 
 /** True when a product carries ANY anabolic tag (exact, case-insensitive). */
-export function isAnabolic(product: Pick<Product, "tags">): boolean {
+export function isAnabolic(product: { tags?: Product["tags"] }): boolean {
   const tags = (product.tags ?? []).map((t) => t.toLowerCase());
   return ANABOLIC_TAGS.some((t) => tags.includes(t));
 }

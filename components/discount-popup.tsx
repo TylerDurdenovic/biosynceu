@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const SEEN_KEY = "bsl_shop10_seen";
-// Shared session flag so the waitlist popup doesn't also fire on this visit.
-export const PROMO_ACTIVE_KEY = "bsl_promo_active";
 const CODE = "SHOP10";
 
 const STRINGS = {
@@ -42,13 +40,6 @@ export function DiscountPopup() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (localStorage.getItem(SEEN_KEY)) return;
-    // Claim the "a promo is showing" slot for this session so the waitlist
-    // popup stays quiet — we don't want two popups stacking on a first visit.
-    try {
-      sessionStorage.setItem(PROMO_ACTIVE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
     const timer = setTimeout(() => setOpen(true), 2500);
     return () => clearTimeout(timer);
   }, []);

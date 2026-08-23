@@ -41,8 +41,8 @@ export function LanguageProvider({
   /* ── resolve language on first render ──
      Priority:
        1. An explicit stored preference (the customer used the toggle before).
-       2. Otherwise auto-detect from the browser language — biosynclabs.de is
-          a German-market store, and a first-time visitor on a German browser
+       2. Otherwise auto-detect from the browser language — this is a
+          German-market store, and a first-time visitor on a German browser
           was previously shown English (the default), which is exactly what
           customers complained about. de-* browsers now get German out of the
           box while everyone else keeps English.

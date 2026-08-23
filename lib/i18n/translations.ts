@@ -69,9 +69,6 @@ export const translations = {
       contact: "Contact Us",
       faq: "FAQ",
       labResults: "Lab Results",
-      calculator: "Calculator",
-      penGuide: "Pen Guide",
-      penGuideSub: "How to use your injectable pen",
       trackOrder: "Track Order",
       shopCategories: {
         shopAll: "Shop All Products",
@@ -85,8 +82,6 @@ export const translations = {
         cognitive: "Cognitive Enhancement",
         healing: "Healing & Regeneration",
         quickAccess: "Quick access",
-        pens: "Pre-filled Pens",
-        pensSub: "Ready-to-use injector pens",
         bacWater: "Bacteriostatic Water",
         bacWaterSub: "For reconstitution",
         groups: {
@@ -95,7 +90,6 @@ export const translations = {
           weight: "Weight & Metabolism",
           focusLongevity: "Focus, Sleep & Longevity",
           aesthetics: "Aesthetics & Essentials",
-          anabolics: "Anabolics & PCT",
         },
       },
     },
@@ -115,7 +109,6 @@ export const translations = {
         labResults: "Lab Results",
         faq: "FAQ",
         contact: "Contact Us",
-        researchGuides: "Research Guides",
         trackOrder: "Track Order",
         wishlist: "My Wishlist",
       },
@@ -591,117 +584,6 @@ export const translations = {
       cardPaidNote:
         "Already paid by card? Your payment is complete — you can ignore the bank transfer details below.",
     },
-    calculator: {
-      badge: "Research Tool",
-      title: "Peptide Calculator",
-      subtitle:
-        "Select your syringe size, vial quantity, bacteriostatic water volume, and target dose — we'll calculate exactly how many syringe units to draw.",
-      steps: {
-        step1: "Which syringe are you using?",
-        step2: "Peptide vial quantity",
-        step3: "How much bacteriostatic water are you adding?",
-        step4: "Desired dose per injection",
-      },
-      placeholders: {
-        vial: "e.g. 20",
-        water: "e.g. 2.5",
-        dose: "e.g. 200",
-      },
-      result: {
-        label: "Result",
-        fillPrompt: "Fill in all steps to see your result",
-        warning: "⚠️ Warning",
-        warningBody:
-          "Syringe volume is not sufficient for the specified dosage. You need {units} units but your syringe only holds {max} units.",
-        instruction:
-          "To have a dose of {dose} mcg, pull the syringe to {units} units",
-        unitsNeeded: ">{max} units needed",
-        unitsLabel: "{units} units",
-        concentration: "Concentration",
-        volumePerDose: "Volume / dose",
-        dosesPerVial: "Doses / vial",
-      },
-      formula: {
-        label: "Formula:",
-        body: "Units = (Dose mcg × BAC Water ml) ÷ (Vial mg × 10). Uses U-100 insulin syringe standard (1 unit = 0.01 ml).",
-      },
-      reconstitution: {
-        eyebrow: "Step-by-Step Guide",
-        title: "Correct Peptide Reconstitution",
-        subtitle:
-          "Our peptides are delivered as lyophilised (freeze-dried) powders. Before use in research, they must be carefully reconstituted with bacteriostatic water.",
-        steps: [
-          {
-            title: "1. Prepare a Sterile Environment",
-            body: "Begin by thoroughly washing your hands and donning sterile gloves and safety goggles. Your workspace must be impeccably clean. You will need: lyophilised peptide vial, sterile insulin syringe, bacteriostatic water, alcohol swabs, and protective equipment. Sterility is critical for accurate and reproducible research results.",
-          },
-          {
-            title: "2. Peptide & Solvent Preparation",
-            body: "Allow both the peptide vial and bacteriostatic water to reach room temperature before use — cold solutions can interfere with reconstitution. Remove the central metal cap from the peptide vial and disinfect the rubber stopper with an alcohol swab. Repeat for the BAC water vial.",
-          },
-          {
-            title: "3. Adding the Bacteriostatic Water",
-            body: "Draw the required volume of bacteriostatic water into a sterile syringe. Insert the needle into the peptide vial at a 45° angle, allowing the water to run slowly down the interior wall. This minimises foam and bubble formation, ensuring even dissolution. Gently swirl — never shake.",
-          },
-          {
-            title: "4. Storage of Reconstituted Peptide",
-            body: "Store reconstituted peptide solutions at 2–8 °C (refrigerator). Solutions are typically stable for up to 28 days when refrigerated. For long-term storage, freeze aliquots at −20 °C. Avoid repeated freeze-thaw cycles as this degrades peptide integrity and bioactivity.",
-          },
-        ],
-      },
-      disclaimer: {
-        title: "⚠️ For Research Use Only",
-        body: "These instructions are intended solely for informational purposes in a laboratory research context. All BioSyncLabs products are strictly for research use only. Human consumption is strictly prohibited.",
-      },
-      cta: {
-        question: "Need Bacteriostatic Water for your research?",
-        button: "Shop BAC Water",
-      },
-    },
-    penCalculator: {
-      eyebrow: "Interactive tool",
-      title: "Pen Click Calculator",
-      subtitle:
-        "Drag the slider or type a dose — the pen window updates live.",
-      tabs: {
-        vial: "Vial",
-        pen: "Pen",
-      },
-      pen: {
-        totalDosage: "Total dosage in pen",
-        totalClicks: "Clicks in a full pen",
-        desiredDosage: "Desired dosage",
-        sliderHint: "drag to scrub",
-        sliderMin: "0 mcg",
-        sliderMax: "{value} mcg (max shot)",
-      },
-      vial: {
-        amount: "Peptide amount in vial",
-        water: "Bacteriostatic water",
-        desiredDosage: "Desired dosage",
-        needleVolume: "Needle volume required",
-      },
-      results: {
-        clicksLabel: "Number of clicks",
-        overMax:
-          "Over the 60-click max single shot — split into {count} injections.",
-        dialOne: "Dial {clicks} click on a {mg} mg pen.",
-        dialMany: "Dial {clicks} clicks on a {mg} mg pen.",
-        enterDose: "Enter a desired dose to see the dial setting.",
-        dosesPerPen: "Doses per pen",
-        mcgPerClick: "Mcg per click",
-        concentration: "Concentration",
-        dosesPerVial: "Doses per vial",
-        u100Units: "On a U-100 insulin syringe that's {units} units.",
-        enterAll: "Enter all three values to see the result.",
-      },
-      footer:
-        "Each click on a BioSyncLabs pen pushes out the same tiny volume regardless of strength — only the mg per click changes. For research use only.",
-      footerVial:
-        "Draw the calculated volume into your syringe to hit the target dose. Always reconstitute with bacteriostatic water first. For research use only.",
-      penLabel: "BioSyncLabs Pen",
-      unitsLabel: "{units} units",
-    },
     privacy: {
       badge: "RUO Products Only",
       title: "Privacy Policy & Disclaimer",
@@ -873,12 +755,6 @@ export const translations = {
       browseProducts: "Browse products",
       viewProduct: "View product",
     },
-    guides: {
-      badge: "Research knowledge base",
-      title: "Peptide research guides",
-      subtitle: "Evidence-based overviews of research compounds — mechanisms, published models, and laboratory protocols. For research use only.",
-      disclaimer: "All guides are for informational and research purposes only. No content constitutes medical advice. BioSyncLabs compounds are sold for research use only (RUO).",
-    },
   },
 
   /* ─────────────────────── GERMAN ────────────────────────── */
@@ -950,9 +826,6 @@ export const translations = {
       contact: "Kontakt",
       faq: "FAQ",
       labResults: "Zertifikate",
-      calculator: "Rechner",
-      penGuide: "Pen-Anleitung",
-      penGuideSub: "So benutzt du deinen Pen",
       trackOrder: "Verfolgen",
       shopCategories: {
         shopAll: "Alle Produkte",
@@ -966,8 +839,6 @@ export const translations = {
         cognitive: "Kognitive Verbesserung",
         healing: "Heilung & Regeneration",
         quickAccess: "Schnellzugriff",
-        pens: "Vorgefüllte Pens",
-        pensSub: "Gebrauchsfertige Injektor-Pens",
         bacWater: "Bakteriostatisches Wasser",
         bacWaterSub: "Zur Rekonstitution",
         groups: {
@@ -976,7 +847,6 @@ export const translations = {
           weight: "Gewicht & Metabolismus",
           focusLongevity: "Fokus, Schlaf & Langlebigkeit",
           aesthetics: "Ästhetik & Zubehör",
-          anabolics: "Anabolika & PCT",
         },
       },
     },
@@ -996,7 +866,6 @@ export const translations = {
         labResults: "Zertifikate",
         faq: "FAQ",
         contact: "Kontakt",
-        researchGuides: "Forschungsanleitungen",
         trackOrder: "Bestellung verfolgen",
         wishlist: "Mein Wunschzettel",
       },
@@ -1479,119 +1348,6 @@ export const translations = {
       cardPaidNote:
         "Bereits mit Karte bezahlt? Ihre Zahlung ist abgeschlossen — Sie können die untenstehenden Überweisungsdaten ignorieren.",
     },
-    calculator: {
-      badge: "Forschungswerkzeug",
-      title: "Peptid-Rechner",
-      subtitle:
-        "Wählen Sie Ihre Spritzengröße, Flaschenmenge, bakteriostatisches Wasservolumen und Zieldosis — wir berechnen genau, wie viele Spritzen-Einheiten Sie aufziehen müssen.",
-      steps: {
-        step1: "Welche Spritze verwenden Sie?",
-        step2: "Peptidmenge im Fläschchen",
-        step3: "Wie viel bakteriostatisches Wasser geben Sie hinzu?",
-        step4: "Gewünschte Dosis pro Injektion",
-      },
-      placeholders: {
-        vial: "z. B. 20",
-        water: "z. B. 2,5",
-        dose: "z. B. 200",
-      },
-      result: {
-        label: "Ergebnis",
-        fillPrompt: "Füllen Sie alle Schritte aus, um Ihr Ergebnis zu sehen",
-        warning: "⚠️ Warnung",
-        warningBody:
-          "Das Spritzenvolumen reicht für die angegebene Dosierung nicht aus. Sie benötigen {units} Einheiten, Ihre Spritze fasst jedoch nur {max} Einheiten.",
-        instruction:
-          "Für eine Dosis von {dose} mcg ziehen Sie die Spritze auf {units} Einheiten auf",
-        unitsNeeded: ">{max} Einheiten erforderlich",
-        unitsLabel: "{units} Einheiten",
-        concentration: "Konzentration",
-        volumePerDose: "Volumen / Dosis",
-        dosesPerVial: "Dosen / Fläschchen",
-      },
-      formula: {
-        label: "Formel:",
-        body: "Einheiten = (Dosis mcg × BAC-Wasser ml) ÷ (Fläschchen mg × 10). Verwendet den U-100-Insulinspritzen-Standard (1 Einheit = 0,01 ml).",
-      },
-      reconstitution: {
-        eyebrow: "Schritt-für-Schritt-Anleitung",
-        title: "Korrekte Peptid-Rekonstitution",
-        subtitle:
-          "Unsere Peptide werden als lyophilisierte (gefriergetrocknete) Pulver geliefert. Vor der Verwendung in der Forschung müssen sie sorgfältig mit bakteriostatischem Wasser rekonstituiert werden.",
-        steps: [
-          {
-            title: "1. Sterile Arbeitsumgebung vorbereiten",
-            body: "Beginnen Sie damit, sich gründlich die Hände zu waschen und sterile Handschuhe sowie eine Schutzbrille anzulegen. Ihre Arbeitsfläche muss makellos sauber sein. Sie benötigen: lyophilisiertes Peptid-Fläschchen, sterile Insulinspritze, bakteriostatisches Wasser, Alkoholtupfer und Schutzausrüstung. Sterilität ist entscheidend für präzise und reproduzierbare Forschungsergebnisse.",
-          },
-          {
-            title: "2. Vorbereitung von Peptid und Lösungsmittel",
-            body: "Lassen Sie sowohl das Peptid-Fläschchen als auch das bakteriostatische Wasser vor der Verwendung Raumtemperatur erreichen — kalte Lösungen können die Rekonstitution beeinträchtigen. Entfernen Sie die zentrale Metallkappe des Peptid-Fläschchens und desinfizieren Sie den Gummistopfen mit einem Alkoholtupfer. Wiederholen Sie dies für das BAC-Wasser-Fläschchen.",
-          },
-          {
-            title: "3. Zugabe des bakteriostatischen Wassers",
-            body: "Ziehen Sie das erforderliche Volumen bakteriostatisches Wasser in eine sterile Spritze auf. Stechen Sie die Nadel in einem Winkel von 45° in das Peptid-Fläschchen, sodass das Wasser langsam an der Innenwand herabläuft. Dies minimiert Schaum- und Bläschenbildung und sorgt für eine gleichmäßige Auflösung. Sanft schwenken — niemals schütteln.",
-          },
-          {
-            title: "4. Lagerung des rekonstituierten Peptids",
-            body: "Lagern Sie rekonstituierte Peptidlösungen bei 2–8 °C (Kühlschrank). Im Kühlschrank sind die Lösungen in der Regel bis zu 28 Tage stabil. Für die Langzeitlagerung frieren Sie Aliquote bei −20 °C ein. Vermeiden Sie wiederholte Gefrier-Tau-Zyklen, da diese die Integrität und Bioaktivität des Peptids beeinträchtigen.",
-          },
-        ],
-      },
-      disclaimer: {
-        title: "⚠️ Nur für Forschungszwecke",
-        body: "Diese Anleitung dient ausschließlich Informationszwecken im Rahmen der Laborforschung. Alle BioSyncLabs-Produkte sind ausschließlich für Forschungszwecke bestimmt. Der menschliche Verzehr ist strengstens untersagt.",
-      },
-      cta: {
-        question: "Benötigen Sie bakteriostatisches Wasser für Ihre Forschung?",
-        button: "BAC-Wasser kaufen",
-      },
-    },
-    penCalculator: {
-      eyebrow: "Interaktives Tool",
-      title: "Pen-Klick-Rechner",
-      subtitle:
-        "Verschieben Sie den Regler oder geben Sie eine Dosis ein — das Pen-Fenster aktualisiert sich in Echtzeit.",
-      tabs: {
-        vial: "Fläschchen",
-        pen: "Pen",
-      },
-      pen: {
-        totalDosage: "Gesamtdosis im Pen",
-        totalClicks: "Klicks in einem vollen Pen",
-        desiredDosage: "Gewünschte Dosis",
-        sliderHint: "ziehen zum Anpassen",
-        sliderMin: "0 mcg",
-        sliderMax: "{value} mcg (max. Injektion)",
-      },
-      vial: {
-        amount: "Peptidmenge im Fläschchen",
-        water: "Bakteriostatisches Wasser",
-        desiredDosage: "Gewünschte Dosis",
-        needleVolume: "Erforderliches Nadelvolumen",
-      },
-      results: {
-        clicksLabel: "Anzahl der Klicks",
-        overMax:
-          "Über dem Maximum von 60 Klicks pro Einzelinjektion — auf {count} Injektionen aufteilen.",
-        dialOne: "{clicks} Klick an einem {mg} mg Pen einstellen.",
-        dialMany: "{clicks} Klicks an einem {mg} mg Pen einstellen.",
-        enterDose:
-          "Geben Sie eine gewünschte Dosis ein, um die Einstellung zu sehen.",
-        dosesPerPen: "Dosen pro Pen",
-        mcgPerClick: "Mcg pro Klick",
-        concentration: "Konzentration",
-        dosesPerVial: "Dosen pro Fläschchen",
-        u100Units: "Auf einer U-100-Insulinspritze entspricht das {units} Einheiten.",
-        enterAll:
-          "Geben Sie alle drei Werte ein, um das Ergebnis zu sehen.",
-      },
-      footer:
-        "Jeder Klick an einem BioSyncLabs-Pen gibt unabhängig von der Wirkstoffstärke dasselbe winzige Volumen ab — nur die mg pro Klick ändern sich. Nur für Forschungszwecke.",
-      footerVial:
-        "Ziehen Sie das berechnete Volumen in Ihre Spritze auf, um die Zieldosis zu erreichen. Rekonstituieren Sie zuerst immer mit bakteriostatischem Wasser. Nur für Forschungszwecke.",
-      penLabel: "BioSyncLabs Pen",
-      unitsLabel: "{units} Einheiten",
-    },
     privacy: {
       badge: "Nur für Forschungszwecke",
       title: "Datenschutzrichtlinie & Haftungsausschluss",
@@ -1762,12 +1518,6 @@ export const translations = {
       emptyHint: "Tippen Sie auf ♡ bei einem Produkt, um es hier zu speichern",
       browseProducts: "Produkte durchsuchen",
       viewProduct: "Produkt ansehen",
-    },
-    guides: {
-      badge: "Forschungs-Wissensdatenbank",
-      title: "Peptid-Forschungsführer",
-      subtitle: "Evidenzbasierte Übersichten zu Forschungsverbindungen — Mechanismen, veröffentlichte Modelle und Laborprotokolle. Nur für Forschungszwecke.",
-      disclaimer: "Alle Leitfäden dienen ausschließlich Informations- und Forschungszwecken. Kein Inhalt stellt medizinischen Rat dar. BioSyncLabs-Verbindungen werden ausschließlich für Forschungszwecke (RUO) verkauft.",
     },
   },
 } as const;

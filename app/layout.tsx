@@ -5,7 +5,6 @@ import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
 import { HideOnAdmin } from "components/layout/hide-on-admin";
 import { SupportButton } from "components/support-button";
-import { WaitlistPopup } from "components/waitlist-popup";
 import { LanguageProvider } from "contexts/language-context";
 import { ThemeProvider } from "contexts/theme-context";
 import { WishlistProvider } from "contexts/wishlist-context";
@@ -45,7 +44,6 @@ export const metadata: Metadata = {
   keywords: [
     // Brand
     "BioSyncLabs",
-    "biosynclabs.de",
     "BioSyncLabs peptides",
     "BioSyncLabs review",
     // Core product — EN
@@ -95,7 +93,6 @@ export const metadata: Metadata = {
     // Informational
     "what are research peptides",
     "how do peptides work",
-    "peptide research guide",
     "BPC-157 effects mechanism",
     "peptide reconstitution guide",
     "bacteriostatic water peptides",
@@ -225,8 +222,8 @@ export const metadata: Metadata = {
  *
  *  - Organization: builds the Google Knowledge Panel that shows on the right
  *    side of branded searches. `alternateName` ensures shortened brand
- *    queries ("BioSync") still resolve to us. `sameAs` and `contactPoint`
- *    feed the Knowledge Panel.
+ *    queries ("BioSync") still resolve to us. `contactPoint` feeds the
+ *    Knowledge Panel.
  *  - WebSite + SearchAction: enables the inline "Search this site" sitelink.
  *  - SiteNavigationElement: the *single most important* signal for Google
  *    sitelinks — a machine-readable list of our top pages. Sitelinks are
@@ -236,7 +233,6 @@ export const metadata: Metadata = {
 const siteNav = [
   { name: "Shop Peptides", path: "/shop" },
   { name: "Lab Results", path: "/lab-results" },
-  { name: "Research Guides", path: "/guides" },
   { name: "About Us", path: "/about" },
   { name: "Contact", path: "/contact" },
   { name: "FAQ", path: "/faq" },
@@ -257,7 +253,6 @@ const shopCategories = [
   { name: "Sleep", handle: "sleep-enhancement-research" },
   { name: "Immunity", handle: "immunity-enhancement-research" },
   { name: "Cognitive", handle: "cognitive-enhancement-research" },
-  { name: "Pens", handle: "pens" },
 ];
 
 const jsonLd = {
@@ -269,7 +264,7 @@ const jsonLd = {
       "@type": ["Organization", "OnlineStore"],
       "@id": `${baseUrl}/#organization`,
       name: "BioSyncLabs",
-      alternateName: ["BioSync", "BioSync Labs", "biosynclabs.de"],
+      alternateName: ["BioSync", "BioSync Labs"],
       legalName: "BioSyncLabs",
       url: baseUrl,
       email: "research@biosynclabs.to",
@@ -281,12 +276,6 @@ const jsonLd = {
         height: 630,
       },
       image: `${baseUrl}/logo2.png`,
-      // Real social profiles — sameAs is one of the strongest signals Google
-      // uses to attach a Knowledge Panel to a brand.
-      sameAs: [
-        "https://www.instagram.com/biosynclabseu/",
-        "https://www.tiktok.com/@biosynclabseu",
-      ],
       slogan: "Germany's trusted EU research peptide supplier",
       description:
         "BioSyncLabs is a Germany-based supplier of research-grade peptides and bioscience compounds for licensed laboratory and academic research. Every batch is third-party HPLC tested to ≥99% purity. All products sold strictly for Research Use Only (RUO).",
@@ -368,8 +357,8 @@ const jsonLd = {
  * Resolve the initial UI language on the server so the first paint is already
  * correct. Priority: an explicit `lang` cookie (set when the customer used the
  * toggle) → otherwise the browser's Accept-Language header. German-market
- * visitors (biosynclabs.de) now get German immediately instead of a flash of
- * English — the exact thing customers complained about.
+ * visitors now get German immediately instead of a flash of English — the
+ * exact thing customers complained about.
  */
 function resolveInitialLang(
   cookieLang: string | undefined,
@@ -496,20 +485,10 @@ window.smartsupp||(function(d) {
                 <HideOnAdmin>
                   <SupportButton />
                 </HideOnAdmin>
-                {/* SHOP10 10%-off welcome popup — first visit only, and it
-                    suppresses the waitlist popup so the two never stack. */}
+                {/* SHOP10 10%-off welcome popup — first visit only. */}
                 <HideOnAdmin>
                   <DiscountPopup />
                 </HideOnAdmin>
-                {/* V2 pen waiting-list popup. Kill-switch: set
-                    NEXT_PUBLIC_WAITLIST_POPUP=off before pointing Google Ads at
-                    the site — a promo popup + pen + giveaway is the ad-policy
-                    risk the audit flagged. */}
-                {process.env.NEXT_PUBLIC_WAITLIST_POPUP !== "off" && (
-                  <HideOnAdmin>
-                    <WaitlistPopup />
-                  </HideOnAdmin>
-                )}
                 <Toaster
                   closeButton
                   toastOptions={{

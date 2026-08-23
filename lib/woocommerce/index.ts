@@ -1,4 +1,5 @@
 import { TAGS } from "lib/constants";
+import { isVialPeptide } from "lib/product-category";
 import {
   unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
@@ -262,6 +263,7 @@ function reshapeProduct(
       description: product.short_description.replace(/<[^>]+>/g, "").trim(),
     },
     tags: product.tags.map((t) => t.slug),
+    categories: product.categories.map((c) => c.slug),
     updatedAt: product.date_modified,
   };
 }
@@ -675,7 +677,7 @@ export async function getProducts({
     .join("&");
 
   const products = await wcFetch<WCProduct[]>(`/products?${qs}`);
-  return products.map((p) => reshapeProduct(p));
+  return products.map((p) => reshapeProduct(p)).filter(isVialPeptide);
 }
 
 export async function getProduct(handle: string): Promise<Product | undefined> {
@@ -711,15 +713,18 @@ export async function getProductRecommendations(
 
   if (!WC_URL) return [];
 
-  // WooCommerce has no native recommendations; return popular products
+  // WooCommerce has no native recommendations; return popular products.
+  // Over-fetch because the vials-only filter below drops pens/HGH/anabolics/
+  // accessories — a per_page of 4 would often leave nothing to recommend.
   const products = await wcFetch<WCProduct[]>(
-    `/products?per_page=5&exclude=${productId}&orderby=popularity&status=publish`,
+    `/products?per_page=20&exclude=${productId}&orderby=popularity&status=publish`,
   );
 
   return products
     .filter((p) => String(p.id) !== productId)
-    .slice(0, 4)
-    .map((p) => reshapeProduct(p));
+    .map((p) => reshapeProduct(p))
+    .filter(isVialPeptide)
+    .slice(0, 4);
 }
 
 // ── Collections (WC product categories) ──────────────────────────────────────
@@ -798,20 +803,7 @@ export async function getCollectionProducts({
     .join("&");
 
   const products = await wcFetch<WCProduct[]>(`/products?${qs}`);
-  return products.map((p) => reshapeProduct(p));
-}
-
-export async function getCollectionProductCount(
-  collection: string,
-): Promise<number> {
-  "use cache";
-  cacheTag(TAGS.collections, TAGS.products);
-  cacheLife("hours");
-
-  // Reuse the single cached categories list — the count is already on each
-  // category record, so this needs ZERO extra API calls after the first fetch.
-  const cats = await getRawCategories();
-  return cats.find((c) => c.slug === collection)?.count ?? 0;
+  return products.map((p) => reshapeProduct(p)).filter(isVialPeptide);
 }
 
 // ── Pages (WordPress REST API) ────────────────────────────────────────────────
@@ -853,7 +845,6 @@ export async function getMenu(_handle: string): Promise<Menu[]> {
     { title: "Home", path: "/" },
     { title: "Shop", path: "/shop" },
     { title: "Lab Results", path: "/lab-results" },
-    { title: "Calculator", path: "/peptide-calculator" },
     { title: "Contact Us", path: "/contact" },
   ];
 }
@@ -1031,44 +1022,6 @@ export async function subscribeNewsletter(
       return { ok: true, alreadySubscribed: true };
     }
     return { ok: false, error: msg };
-  }
-}
-
-// ── Waitlist ──────────────────────────────────────────────────────────────────
-
-export const WAITLIST_BASE = 132;
-
-export async function waitlistCount(): Promise<number> {
-  return WAITLIST_BASE;
-}
-
-export async function joinWaitlist(
-  email: string,
-): Promise<{ ok: boolean; count: number; error?: string }> {
-  const clean = email.trim().toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) {
-    return { ok: false, count: WAITLIST_BASE, error: "invalid email" };
-  }
-  if (!WC_URL) return { ok: false, count: WAITLIST_BASE, error: "Not configured" };
-
-  try {
-    const res = await wcFetch<WCCustomerCreate>("/customers", {
-      method: "POST",
-      body: JSON.stringify({
-        email: clean,
-        meta_data: [{ key: "_waitlist", value: "yes" }],
-      }),
-    });
-    if ("code" in res && res.code !== "registration-error-email-exists") {
-      return { ok: false, count: WAITLIST_BASE, error: res.message };
-    }
-    return { ok: true, count: WAITLIST_BASE };
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    if (msg.includes("registration-error-email-exists")) {
-      return { ok: true, count: WAITLIST_BASE };
-    }
-    return { ok: false, count: WAITLIST_BASE, error: msg };
   }
 }
 

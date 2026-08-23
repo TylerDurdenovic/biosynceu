@@ -4,7 +4,6 @@ import { LanguageToggle, LanguageToggleMini } from "components/language-toggle";
 import { getMenu, getProduct, getProducts } from "lib/woocommerce";
 import { Menu } from "lib/woocommerce/types";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-import { isAnabolic } from "lib/departments";
 import type { ShopMenuProduct } from "lib/shop-groups";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +21,6 @@ export const PRIMARY_NAV = [
   { title: "Home", path: "/" },
   { title: "Shop", path: "/shop" },
   { title: "Lab Results", path: "/lab-results" },
-  { title: "Calculator", path: "/peptide-calculator" },
   { title: "Contact Us", path: "/contact" },
 ];
 
@@ -44,17 +42,15 @@ export async function Navbar() {
   ]);
 
   // Lightweight product list for the Shop mega-menu — strip to just what the
-  // menu needs, drop hidden products, AND drop anabolic-tagged products (they
-  // live in their own Anabolics & PCT department, surfaced as a separate
-  // banner in the mega-menu).
+  // menu needs and drop hidden products. getProducts() already returns vials
+  // only (pens, HGH, anabolics and accessories are filtered out in
+  // lib/woocommerce), so the menu never links to an unlisted product.
   const shopProducts: ShopMenuProduct[] = allProducts
     .filter((p) => !p.tags.includes(HIDDEN_PRODUCT_TAG))
     .map((p) => ({
       handle: p.handle,
       title: p.title,
       available: p.availableForSale,
-      // Flag anabolics so the mega-menu can group them in their own column.
-      anabolic: isAnabolic(p),
     }));
   const rawLinks: Menu[] = menu.length > 0 ? menu : (PRIMARY_NAV as Menu[]);
 
@@ -69,7 +65,6 @@ export async function Navbar() {
     "/",
     "/shop",
     "/lab-results",
-    "/peptide-calculator",
     CONTACT_PATH,
   ];
   navLinks.sort((a, b) => {

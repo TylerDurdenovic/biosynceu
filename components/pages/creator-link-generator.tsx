@@ -8,7 +8,7 @@ type ProductItem = { handle: string; title: string };
  * Internal merchant tool: builds the ready-to-send creator referral link.
  *
  * Pairs with the existing referral flow (lib/affiliate.ts + affiliate-tracker):
- * a link like https://biosynclabs.de/product/<handle>?ref=<CODE> stores <CODE>
+ * a link like https://biosynclabs.eu/product/<handle>?ref=<CODE> stores <CODE>
  * in a 30-day cookie, auto-applies it to the cart, carries it through Shopify
  * checkout, and attributes the sale to the creator. The <CODE> must match a
  * real Shopify discount code.
@@ -23,7 +23,7 @@ export function CreatorLinkGenerator({
   // In local dev baseUrl is http://localhost:3000 — default to the real domain
   // so the links are actually sendable. Editable in case the domain changes.
   const defaultOrigin = baseUrl.includes("localhost")
-    ? "https://biosynclabs.de"
+    ? "https://biosynclabs.eu"
     : baseUrl;
 
   const [origin, setOrigin] = useState(defaultOrigin);

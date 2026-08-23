@@ -8,21 +8,14 @@ import { WishlistHeart } from "components/wishlist-heart";
 import { defaultSort, sorting } from "lib/constants";
 import { translations } from "lib/i18n/translations";
 import {
-  getCollectionProductCount,
   getCollectionProducts,
   getCollections,
   getProducts,
 } from "lib/woocommerce";
 import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
-import { groupedAllOrder, isPen, isAccessory } from "lib/product-category";
-import { isAnabolic } from "lib/departments";
+import { groupedAllOrder } from "lib/product-category";
 import { baseUrl } from "lib/utils";
-
-/** Synthetic collection handle for the Pens filter (no Shopify collection). */
-const PENS_HANDLE = "pens";
-/** Synthetic collection handle for the Anabolics & PCT filter. */
-const ANABOLICS_HANDLE = "steroids";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -93,25 +86,6 @@ const BENEFIT_AREAS: BenefitArea[] = [
     gradient: "from-teal-400 to-cyan-500",
     iconPath: "M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z",
     imageSrc: "/icons/Healing%20and%20Regeneration%20research.png",
-  },
-  {
-    // Synthetic "Pens" area — surfaced as a first-class category so customers
-    // never miss the pre-filled injector pens. Filtered client-/server-side
-    // by handle/title rather than a Shopify collection.
-    handle: PENS_HANDLE,
-    labelEn: "Pens",
-    labelDe: "Pens",
-    gradient: "from-pink-400 to-rose-500",
-    iconPath: "M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125",
-  },
-  {
-    // Synthetic "Anabolics & PCT" department — filtered by anabolic tag rather
-    // than a WooCommerce collection, kept separate from the research peptides.
-    handle: ANABOLICS_HANDLE,
-    labelEn: "Anabolics & PCT",
-    labelDe: "Anabolika & PCT",
-    gradient: "from-red-500 to-rose-600",
-    iconPath: "M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z",
   },
 ];
 
@@ -380,17 +354,14 @@ function CategorySidebar({
   activeCollection,
   allProductsCount,
   collectionCounts,
-  pensCount,
   ts,
 }: {
   collections: Collection[];
   activeCollection: string | undefined;
   allProductsCount: number;
   collectionCounts: Record<string, number>;
-  pensCount: number;
   ts: ShopT;
 }) {
-  const pensActive = activeCollection === PENS_HANDLE;
   return (
     <aside className="w-full lg:w-56 lg:shrink-0">
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -427,35 +398,6 @@ function CategorySidebar({
               </span>
             </Link>
           </li>
-
-          {/* Pens — synthetic category so customers can jump straight to the
-              pre-filled injector pens (and never miss them). */}
-          {pensCount > 0 && (
-            <li>
-              <Link
-                href={`/shop?collection=${PENS_HANDLE}`}
-                className={`flex items-center justify-between px-4 py-2.5 text-sm transition-colors ${
-                  pensActive
-                    ? "border-l-2 border-slate-900 bg-slate-50 font-semibold text-slate-900"
-                    : "border-l-2 border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
-              >
-                <span className="flex items-center gap-2">
-                  <svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                  </svg>
-                  Pens
-                </span>
-                <span
-                  className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums ${
-                    pensActive ? "bg-slate-900 text-white" : "bg-slate-100 text-slate-500"
-                  }`}
-                >
-                  {pensCount}
-                </span>
-              </Link>
-            </li>
-          )}
 
           {collections.map((c) => {
             const count = collectionCounts[c.handle] ?? 0;
@@ -749,84 +691,55 @@ export default async function ShopPage(props: {
   // (HTML maintenance page, "upstream connect error", rate limit) renders
   // an empty shop page instead of crashing the whole route.
   const collections = await getCollections().catch(() => [] as Awaited<ReturnType<typeof getCollections>>);
-  const visibleCollections = collections.filter(
+  const listedCollections = collections.filter(
     (c) => c.handle && !c.handle.startsWith("hidden")
   );
 
-  // "Pens" and "Anabolics" are synthetic collections (no WooCommerce category)
-  // — filtered from the full catalogue rather than fetched by collection.
-  const isPensView = activeCollection === PENS_HANDLE;
-  const isAnabolicsView = activeCollection === ANABOLICS_HANDLE;
-  const realCollection =
-    activeCollection && !isPensView && !isAnabolicsView
-      ? activeCollection
-      : undefined;
-
   /* Fetch in parallel:
      - main product list for the visible page
-     - all products (for "All" total + Pens count + Pens filtering)
-     - product counts per visible collection (for sidebar badges) */
-  const [pageProductsRaw, allProductsList, collectionCountValues] = await Promise.all([
-    (realCollection
-      ? getCollectionProducts({ collection: realCollection, sortKey, reverse })
+     - the full catalogue (for the "All" total + per-collection badge counts)
+     Both come back already filtered to vials only — pens, HGH, anabolics and
+     accessories are dropped in lib/woocommerce, so nothing here has to
+     re-filter them out. */
+  const [pageProductsRaw, allProductsList] = await Promise.all([
+    (activeCollection
+      ? getCollectionProducts({ collection: activeCollection, sortKey, reverse })
       : getProducts({ sortKey, reverse })
     ).catch(() => [] as Product[]),
     (activeCollection ? getProducts({}) : Promise.resolve(null)).catch(() => null),
-    Promise.all(
-      visibleCollections.map((c) =>
-        getCollectionProductCount(c.handle).catch(() => 0)
-      )
-    ),
   ]);
 
-  // Full catalogue (for counts + pens/anabolics filtering). On the default
-  // All view the page list already IS the full catalogue, so reuse it.
+  // Full catalogue (for counts). On the default All view the page list already
+  // IS the full catalogue, so reuse it rather than fetching twice.
   const fullList: Product[] = allProductsList ?? (!activeCollection ? pageProductsRaw : []);
 
-  // Full catalogue — HGH and anabolics are shown per owner request.
-  let products: Product[] = isPensView
-    ? (allProductsList ?? pageProductsRaw).filter(isPen)
-    : isAnabolicsView
-      ? (allProductsList ?? pageProductsRaw).filter(isAnabolic)
-      : pageProductsRaw;
+  let products: Product[] = pageProductsRaw;
   if (!activeCollection && !sort) {
-    // Default "All" view order: Pens → Vials → Steroids → Accessories.
-    // Each product lands in exactly one bucket (anabolic wins, then pen, then
-    // accessory, else it's a regular vial).
-    const pens: Product[] = [];
-    const vials: Product[] = [];
-    const steroids: Product[] = [];
-    const accessories: Product[] = [];
-    for (const p of products) {
-      if (isAnabolic(p)) steroids.push(p);
-      else if (isPen(p)) pens.push(p);
-      else if (isAccessory(p)) accessories.push(p);
-      else vials.push(p);
-    }
-    products = [
-      ...groupedAllOrder(pens),
-      ...groupedAllOrder(vials),
-      ...steroids,
-      ...accessories,
-    ];
+    // Default "All" view: merchandising order (flagship vials first).
+    products = groupedAllOrder(products);
   }
 
   const allProductsCount = fullList.length || products.length;
-  const pensCount = fullList.filter((p) => isPen(p)).length;
-  const anabolicsCount = fullList.filter((p) => isAnabolic(p)).length;
 
+  // Badge counts come from the already-filtered catalogue rather than
+  // WooCommerce's raw category counts, which still include the hidden pens /
+  // HGH / anabolics / accessories and would overstate every category.
   const collectionCounts: Record<string, number> = {};
-  visibleCollections.forEach((c, i) => {
-    collectionCounts[c.handle] = collectionCountValues[i] ?? 0;
-  });
+  for (const c of listedCollections) {
+    collectionCounts[c.handle] = fullList.filter((p) =>
+      p.categories.includes(c.handle),
+    ).length;
+  }
 
-  const activeTitle = isPensView
-    ? "Pens"
-    : isAnabolicsView
-      ? "Anabolics & PCT"
-      : activeCollection
-        ? (visibleCollections.find((c) => c.handle === activeCollection)?.title ?? "Collection")
-        : ts.allProducts;
+  // A category left empty by the vials-only filter (e.g. an accessories or
+  // anabolics category) must not show up as a dead 0-product link.
+  const visibleCollections = listedCollections.filter(
+    (c) => (collectionCounts[c.handle] ?? 0) > 0 || c.handle === activeCollection,
+  );
+
+  const activeTitle = activeCollection
+    ? (visibleCollections.find((c) => c.handle === activeCollection)?.title ?? "Collection")
+    : ts.allProducts;
 
   // ── Structured data ───────────────────────────────────────────────
   // BreadcrumbList → drives the Home › Shop › {Collection} trail in SERPs.
@@ -937,7 +850,6 @@ export default async function ShopPage(props: {
                   activeCollection={activeCollection}
                   allProductsCount={allProductsCount}
                   collectionCounts={collectionCounts}
-                  pensCount={pensCount}
                   ts={ts}
                 />
               </div>

@@ -2,7 +2,7 @@
  * Shopify Collabs affiliate tracking helpers.
  *
  * Flow:
- *  - An affiliate sends customers to https://biosynclabs.de/?sca_ref=<refId>
+ *  - An affiliate sends customers to https://biosynclabs.eu/?sca_ref=<refId>
  *  - On first arrival we read the param and stash it in a 30-day cookie
  *    (matching Shopify Collabs' attribution window)
  *  - When the customer checks out — either via the Shopify checkoutUrl or

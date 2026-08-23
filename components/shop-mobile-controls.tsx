@@ -199,41 +199,6 @@ export function ShopMobileControls({
             );
           })()}
 
-          {/* Pens — first-class so phone shoppers never miss the injector pens */}
-          {(() => {
-            const href = "/shop?collection=pens";
-            const isActive = activeCollection === "pens";
-            const isLoading = isPending && activeHref === href;
-            return (
-              <Link
-                href={href}
-                onClick={() => {
-                  setActiveHref(href);
-                  startTransition(() => setCategoriesOpen(false));
-                }}
-                className={`flex items-center justify-between px-5 py-3.5 text-sm transition-all duration-200 active:scale-[.98] ${
-                  isActive
-                    ? "bg-slate-900 font-semibold text-white"
-                    : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <svg className="h-4 w-4 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                  </svg>
-                  Pens
-                </span>
-                {isLoading ? (
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent opacity-60" />
-                ) : isActive ? (
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                  </svg>
-                ) : null}
-              </Link>
-            );
-          })()}
-
           {/* ── Product type collections ─────────────────────────────── */}
           {(() => {
             const BENEFIT_HANDLES = new Set([

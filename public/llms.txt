@@ -4,7 +4,7 @@
 
 ## About BioSyncLabs
 
-BioSyncLabs (biosynclabs.de) is a EU-registered life-science supply company headquartered in Germany. We supply synthetic lyophilized peptides and research biochemicals to academic institutions, contract research organisations (CROs), and licensed laboratories across the European Union.
+BioSyncLabs (biosynclabs.eu) is a EU-registered life-science supply company headquartered in Germany. We supply synthetic lyophilized peptides and research biochemicals to academic institutions, contract research organisations (CROs), and licensed laboratories across the European Union.
 
 Every product batch is independently tested by a third-party ISO-accredited laboratory via HPLC and LC-MS and verified to ≥99% purity. A Certificate of Analysis (CoA) accompanies every order. We do not sell to private consumers and our products are not intended for, and must not be used in, any procedure involving humans or animals.
 
@@ -21,13 +21,14 @@ Every product batch is independently tested by a third-party ISO-accredited labo
 
 ### Research Peptides (lyophilized powder, vials)
 
+We supply lyophilized peptide vials only.
+
 | Product | Handle | Key Research Area |
 |---|---|---|
 | BPC-157 (Body Protection Compound) | bpc-157 | Tissue repair, gut health, tendon & ligament research |
 | TB-500 (Thymosin Beta-4) | tb-500 | Cellular repair, muscle recovery, tissue repair research |
 | GHK-Cu (Copper peptide) | ghk-cu | Skin biology, tissue repair, hair follicle research |
 | Retatrutide | retatrutide | Metabolic research, GLP-1/GIP/GCGR triple agonist |
-| Retatrutide Pen 30mg | retatrutide-pen-30mg | Pre-filled research auto-injector pen |
 | CJC-1295 | cjc-1295 | Growth hormone secretagogue research |
 | Ipamorelin | ipamorelin | Growth hormone releasing peptide research |
 | Selank | selank | Neuropeptide / anxiolytic research |
@@ -46,18 +47,12 @@ Every product batch is independently tested by a third-party ISO-accredited labo
 | SS-31 (Elamipretide) | ss-31 | Mitochondrial peptide research |
 | NAD+ | nad | Cellular energy / longevity co-factor research |
 
-### Lab Accessories
-
-- Bacteriostatic Water (BAC Water) — for peptide reconstitution
-- Research injection pens and syringes
-
 ## Collections / Categories
 
 - **Peptides** — synthetic research peptides (healing, anti-aging, metabolic)
 - **Weight Loss / Metabolic** — GLP-1, GIP and glucagon receptor agonist peptides
 - **Healing** — BPC-157, TB-500, GHK-Cu and related tissue-repair compounds
 - **Anti-aging / Longevity** — Epithalon, NAD+, GHK-Cu and epigenetic compounds
-- **Accessories** — Bacteriostatic water, lab consumables
 
 ## Key Differentiators
 
@@ -70,13 +65,13 @@ Every product batch is independently tested by a third-party ISO-accredited labo
 
 ## Key Pages
 
-- Homepage: https://biosynclabs.de/
-- Shop (all products): https://biosynclabs.de/shop
-- Lab Results / CoAs: https://biosynclabs.de/lab-results
-- Research Guides: https://biosynclabs.de/guides
-- FAQ: https://biosynclabs.de/faq
-- About Us: https://biosynclabs.de/about
-- Contact: https://biosynclabs.de/contact
+- Homepage: https://biosynclabs.eu/
+- Shop (all products): https://biosynclabs.eu/shop
+- Lab Results / CoAs: https://biosynclabs.eu/lab-results
+- Research Guides: https://biosynclabs.eu/guides
+- FAQ: https://biosynclabs.eu/faq
+- About Us: https://biosynclabs.eu/about
+- Contact: https://biosynclabs.eu/contact
 
 ## Target Audience
 
@@ -94,7 +89,7 @@ buy peptides Germany, buy peptides Europe, research peptides EU, peptide supplie
 what are research peptides, how do peptides work, peptide research guide, BPC-157 effects mechanism, BPC-157 research, TB-500 peptide research, peptide reconstitution guide, bacteriostatic water peptides, peptide storage temperature, peptide purity HPLC, are peptides legal in Germany, peptide research legal EU, peptide half life explained, peptide certificate of analysis, BPC-157 vs TB-500, peptides vs SARMs research, CJC-1295 vs Ipamorelin stack, Semax vs Selank nootropic, Retatrutide vs Semaglutide, Retatrutide vs Tirzepatide, GHK-Cu vs copper peptide, GHK-Cu skin research
 
 ### German — Transactional (kaufen)
-BPC-157 kaufen, TB-500 kaufen, TB-500 kaufen Deutschland, GHK-Cu kaufen, Kupferpeptid kaufen, Retatrutide kaufen, Retatrutide Pen kaufen, CJC-1295 kaufen, Ipamorelin kaufen, Selank kaufen, Semax kaufen, DSIP kaufen, Epithalon kaufen, AOD-9604 kaufen, GHRP-6 kaufen, GHRP-2 kaufen, PT-141 kaufen, Melanotan 2 kaufen, Hexarelin kaufen, Tesamorelin kaufen, Kisspeptin kaufen, Follistatin 344 kaufen, SS-31 kaufen, NAD+ kaufen, Peptide kaufen Deutschland, Peptide bestellen EU, Forschungspeptide kaufen, Peptide Onlineshop Deutschland, Laborpeptide bestellen, wo Peptide kaufen in Deutschland, Peptide kaufen ohne Zoll, Peptide aus Europa, Peptide aus Deutschland, günstige Peptide, seriöse Peptide Anbieter
+BPC-157 kaufen, TB-500 kaufen, TB-500 kaufen Deutschland, GHK-Cu kaufen, Kupferpeptid kaufen, Retatrutide kaufen, CJC-1295 kaufen, Ipamorelin kaufen, Selank kaufen, Semax kaufen, DSIP kaufen, Epithalon kaufen, AOD-9604 kaufen, GHRP-6 kaufen, GHRP-2 kaufen, PT-141 kaufen, Melanotan 2 kaufen, Hexarelin kaufen, Tesamorelin kaufen, Kisspeptin kaufen, Follistatin 344 kaufen, SS-31 kaufen, NAD+ kaufen, Peptide kaufen Deutschland, Peptide bestellen EU, Forschungspeptide kaufen, Peptide Onlineshop Deutschland, Laborpeptide bestellen, wo Peptide kaufen in Deutschland, Peptide kaufen ohne Zoll, Peptide aus Europa, Peptide aus Deutschland, günstige Peptide, seriöse Peptide Anbieter
 
 ### German — Benefit / Anwendung
 Peptide für Haut, Peptide für Schlaf, Peptide für Regeneration, Forschungspeptide Anwendungsgebiete
@@ -103,13 +98,13 @@ Peptide für Haut, Peptide für Schlaf, Peptide für Regeneration, Forschungspep
 Peptide Erfahrung, Peptide Nebenwirkungen, was sind die besten Peptide, ab wie viel Jahren kann man Peptide nehmen, legale Forschungspeptide, Peptide legal Deutschland, Peptide Reinheit HPLC, BPC-157 Peptid Forschung, Thymosin Beta-4 Forschung, GHK-Cu Hautforschung, Forschungspeptide kaufen, Peptide Forschung Deutschland
 
 ### Local / Geo
-peptide supplier Berlin, peptide research Munich, peptide shop Hamburg, peptide research Frankfurt, peptide company Germany, Germany peptide lab, peptide supplier EU, biosynclabs.de
+peptide supplier Berlin, peptide research Munich, peptide shop Hamburg, peptide research Frankfurt, peptide company Germany, Germany peptide lab, peptide supplier EU, biosynclabs.eu
 
 ## Brand Information
 
 - **Brand name:** BioSyncLabs
 - **Also known as:** BioSync Labs, BSL
-- **Website:** https://biosynclabs.de
+- **Website:** https://biosynclabs.eu
 - **Country:** Germany (EU)
 - **Languages:** English, German (Deutsch)
 - **Founded:** 2024
@@ -118,7 +113,7 @@ peptide supplier Berlin, peptide research Munich, peptide shop Hamburg, peptide 
 
 ## Contact
 
-For research inquiries, bulk orders, or institutional accounts, use the contact form at https://biosynclabs.de/contact
+For research inquiries, bulk orders, or institutional accounts, use the contact form at https://biosynclabs.eu/contact
 
 ---
 

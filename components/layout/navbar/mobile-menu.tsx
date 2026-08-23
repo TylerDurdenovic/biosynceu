@@ -33,14 +33,13 @@ const BENEFIT_CATEGORIES: { key: BenefitKey; handle: string; icon: ComponentType
   { key: "healing",            handle: "healing-and-regeneration-research",  icon: BeakerIcon },
 ];
 
-const PATH_NAV_KEY: Record<string, "home" | "shop" | "about" | "contact" | "faq" | "labResults" | "calculator" | "trackOrder"> = {
+const PATH_NAV_KEY: Record<string, "home" | "shop" | "about" | "contact" | "faq" | "labResults" | "trackOrder"> = {
   "/": "home",
   "/shop": "shop",
   "/about": "about",
   "/contact": "contact",
   "/faq": "faq",
   "/lab-results": "labResults",
-  "/peptide-calculator": "calculator",
   "/track": "trackOrder",
 };
 
@@ -166,20 +165,6 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                                   <span className="text-sm font-semibold text-slate-800">{t.shop.deptPeptides}</span>
                                 </Link>
 
-                                {/* Pens — first-class so they're never missed */}
-                                <Link
-                                  href="/shop?collection=pens"
-                                  onClick={() => setIsOpen(false)}
-                                  className="flex items-center gap-3 border-b border-slate-100 px-3 py-2.5 transition-colors hover:bg-slate-100"
-                                >
-                                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-pink-400 to-rose-500 text-white">
-                                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
-                                    </svg>
-                                  </span>
-                                  <span className="text-sm font-semibold text-slate-800">{tr.pens}</span>
-                                </Link>
-
                                 {/* Benefit categories */}
                                 {BENEFIT_CATEGORIES.map((cat) => {
                                   const Icon = cat.icon;
@@ -195,21 +180,6 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
                                     </Link>
                                   );
                                 })}
-
-                                {/* Anabolics & PCT — its own department, kept
-                                    separate from the research peptides. */}
-                                <Link
-                                  href="/shop?collection=steroids"
-                                  onClick={() => setIsOpen(false)}
-                                  className="flex items-center gap-3 border-t border-slate-100 px-3 py-2.5 transition-colors hover:bg-slate-100"
-                                >
-                                  <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-red-500 to-rose-600 text-white">
-                                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-                                    </svg>
-                                  </span>
-                                  <span className="text-sm font-semibold text-slate-800">{tr.groups.anabolics}</span>
-                                </Link>
                               </div>
                             )}
                           </li>

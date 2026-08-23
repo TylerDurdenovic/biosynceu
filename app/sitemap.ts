@@ -1,4 +1,3 @@
-import { GUIDES } from "lib/guides-data";
 import { getPages, getProducts } from "lib/woocommerce";
 import { baseUrl, validateEnvironmentVariables } from "lib/utils";
 import { MetadataRoute } from "next";
@@ -18,8 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "muscle-growth-research",
     "cognitive-enhancement-research",
     "healing-and-regeneration-research",
-    // Synthetic "pens" research-area category
-    "pens",
   ];
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -41,18 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.85,
-    })),
-    {
-      url: `${baseUrl}/guides`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    ...GUIDES.map((guide) => ({
-      url: `${baseUrl}/guides/${guide.slug}`,
-      lastModified: guide.publishedAt,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
     })),
     {
       url: `${baseUrl}/lab-results`,
@@ -105,9 +90,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const productsPromise = getProducts({}).then((products) =>
-    products
-      // HGH and anabolics are now included per owner request.
-      .map((product) => ({
+    // getProducts() returns vials only — pens, HGH, anabolics and accessories
+    // are filtered out in lib/woocommerce, so they stay out of the sitemap.
+    products.map((product) => ({
       url: `${baseUrl}/product/${product.handle}`,
       lastModified: product.updatedAt,
       changeFrequency: "weekly" as const,
@@ -137,7 +122,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   } catch (error) {
     // If Shopify is unreachable or returns malformed data, don't throw — a
     // failed sitemap response is worse for crawlers than a partial one.
-    // Fall back to the static routes so home/shop/categories/guides stay
+    // Fall back to the static routes so home/shop/categories stay
     // indexable.
     console.error("sitemap: failed to fetch products/pages, falling back to static routes", error);
     fetchedRoutes = [];

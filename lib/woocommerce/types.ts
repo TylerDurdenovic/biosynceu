@@ -150,6 +150,9 @@ export type Product = {
   images: Image[];
   seo: SEO;
   tags: string[];
+  /** WooCommerce category slugs this product belongs to — lets listings count
+   *  products per collection from one already-filtered fetch. */
+  categories: string[];
   updatedAt: string;
 };
 

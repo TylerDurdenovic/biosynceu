@@ -42,7 +42,6 @@ export const metadata: Metadata = {
     "BioSyncLabs",
     "BioSync",
     "BioSync Labs",
-    "biosynclabs.de",
     "BioSyncLabs Germany",
     "BioSyncLabs review",
     // Product / category

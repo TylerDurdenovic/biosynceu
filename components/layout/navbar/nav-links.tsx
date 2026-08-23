@@ -15,7 +15,6 @@ const PATH_NAV_KEY: Record<string, NavKey> = {
   "/contact": "contact",
   "/faq": "faq",
   "/lab-results": "labResults",
-  "/peptide-calculator": "calculator",
   "/track": "trackOrder",
 };
 

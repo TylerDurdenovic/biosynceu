@@ -13,27 +13,21 @@ export type ShopGroupKey =
   | "growth"
   | "weight"
   | "focusLongevity"
-  | "aesthetics"
-  | "anabolics";
+  | "aesthetics";
 
-/** Display order of the columns, left → right. Anabolics sit last, in their
- *  own column, separated from the research peptides. */
+/** Display order of the columns, left → right. */
 export const SHOP_GROUP_ORDER: ShopGroupKey[] = [
   "healing",
   "growth",
   "weight",
   "focusLongevity",
   "aesthetics",
-  "anabolics",
 ];
 
 export type ShopMenuProduct = {
   handle: string;
   title: string;
   available: boolean;
-  /** True for anabolic-tagged products (steroids/PCT/AI) — routes them into
-   *  their own "Anabolics & PCT" column instead of a peptide theme. */
-  anabolic?: boolean;
 };
 
 /** Lower number = higher up within its column (popular items first). */
@@ -42,8 +36,7 @@ const WITHIN_GROUP_PRIORITY: { test: RegExp; rank: number }[] = [
   { test: /ghk/, rank: 1 },
   { test: /\bbpc/, rank: 2 },
   { test: /tb[-\s]?500/, rank: 3 },
-  { test: /hgh|somatropin/, rank: 4 },
-  { test: /mk[-\s]?677|ibutamoren/, rank: 5 },
+  { test: /mk[-\s]?677|ibutamoren/, rank: 4 },
 ];
 
 function withinRank(h: string): number {
@@ -59,10 +52,6 @@ function withinRank(h: string): number {
 export function classifyProduct(p: { handle: string; title: string }): ShopGroupKey {
   const h = `${p.handle} ${p.title}`.toLowerCase();
 
-  // Accessories / essentials
-  if (/water|bacteriostatic|syringe|needle|insulin|swab/.test(h)) {
-    return "aesthetics";
-  }
   // Weight & metabolism
   if (/retatrutide|tirzepatide|semaglutide|aod|tesamorelin|glp|mounjaro|wegovy/.test(h)) {
     return "weight";
@@ -84,7 +73,7 @@ export function classifyProduct(p: { handle: string; title: string }): ShopGroup
     return "focusLongevity";
   }
   // Growth & recovery (GH axis)
-  if (/hgh|somatropin|mk[-\s]?677|ibutamoren|ipamorelin|ghrp|cjc|sermorelin|hexarelin|growth/.test(h)) {
+  if (/mk[-\s]?677|ibutamoren|ipamorelin|ghrp|cjc|sermorelin|hexarelin|growth/.test(h)) {
     return "growth";
   }
   // Default
@@ -101,11 +90,9 @@ export function groupShopProducts(
     weight: [],
     focusLongevity: [],
     aesthetics: [],
-    anabolics: [],
   };
   for (const p of products) {
-    // Anabolics always go to their own column, regardless of name keywords.
-    out[p.anabolic ? "anabolics" : classifyProduct(p)].push(p);
+    out[classifyProduct(p)].push(p);
   }
   for (const key of SHOP_GROUP_ORDER) {
     out[key].sort((a, b) => {

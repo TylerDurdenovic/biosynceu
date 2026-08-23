@@ -42,19 +42,10 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
       // AdsBot ignores the generic "*" rules unless named explicitly. Keep the
-      // advertised product/shop landing pages crawlable (blocking those causes
-      // "destination not crawlable" ad disapprovals) but hold the ad crawler
-      // away from research-use / dosing content that can trip a policy flag.
-      {
-        userAgent: "AdsBot-Google",
-        allow: "/",
-        disallow: ["/peptide-calculator", "/guides/"],
-      },
-      {
-        userAgent: "AdsBot-Google-Mobile",
-        allow: "/",
-        disallow: ["/peptide-calculator", "/guides/"],
-      },
+      // advertised product/shop landing pages crawlable — blocking those causes
+      // "destination not crawlable" ad disapprovals.
+      { userAgent: "AdsBot-Google", allow: "/" },
+      { userAgent: "AdsBot-Google-Mobile", allow: "/" },
       // Block AI training crawlers that don't respect llms.txt opt-outs
       { userAgent: "GPTBot", disallow: ["/"] },
       { userAgent: "ChatGPT-User", disallow: ["/"] },
