@@ -16,6 +16,23 @@ import { shopifyImageSrcSet, shopifyImageUrl } from "lib/woocommerce/image";
 import { Collection, Product } from "lib/woocommerce/types";
 import { groupedAllOrder } from "lib/product-category";
 import { baseUrl } from "lib/utils";
+
+/**
+ * WooCommerce categories that must never surface on the storefront, even if
+ * they somehow still hold a product. The vials-only product filter already
+ * empties these, but listing them by name means a category can't reappear in
+ * the sidebar (or be reached by typing its ?collection= URL) if a product is
+ * ever mis-filed.
+ */
+const OFF_CATALOGUE_COLLECTIONS = new Set([
+  "anabolics",
+  "steroids",
+  "injectables",
+  "pct",
+  "accessories",
+  "consumables",
+  "uncategorized",
+]);
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -33,56 +50,56 @@ type BenefitArea = {
 const BENEFIT_AREAS: BenefitArea[] = [
   {
     handle: "longevity-and-anti-aging-research",
-    labelEn: "Longevity & Anti-aging",
-    labelDe: "Langlebigkeit & Anti-Aging",
+    labelEn: "Cellular Senescence",
+    labelDe: "Zelluläre Seneszenz",
     gradient: "from-amber-400 to-orange-500",
     iconPath: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z M18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z",
     imageSrc: "/icons/Longevity%20and%20Anti-aging%20Research.png",
   },
   {
     handle: "weight-loss-research",
-    labelEn: "Weight Loss",
-    labelDe: "Gewichtsreduktion",
+    labelEn: "Metabolic Research",
+    labelDe: "Stoffwechselforschung",
     gradient: "from-cyan-400 to-blue-500",
     iconPath: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z",
     imageSrc: "/icons/Weight%20Loss%20Research.png",
   },
   {
     handle: "sleep-enhancement-research",
-    labelEn: "Sleep Enhancement",
-    labelDe: "Schlafoptimierung",
+    labelEn: "Circadian & Sleep Biology",
+    labelDe: "Zirkadiane & Schlafbiologie",
     gradient: "from-indigo-400 to-violet-500",
     iconPath: "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z",
     imageSrc: "/icons/Sleep%20Enhancement%20Research.png",
   },
   {
     handle: "immunity-enhancement-research",
-    labelEn: "Immunity Enhancement",
-    labelDe: "Immunstärkung",
+    labelEn: "Immunology",
+    labelDe: "Immunologie",
     gradient: "from-green-400 to-emerald-500",
     iconPath: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
     imageSrc: "/icons/Immunity%20Enhancement%20Research.png",
   },
   {
     handle: "muscle-growth-research",
-    labelEn: "Muscle Growth",
-    labelDe: "Muskelaufbau",
+    labelEn: "Myogenesis & Recovery",
+    labelDe: "Myogenese & Regeneration",
     gradient: "from-orange-400 to-red-500",
     iconPath: "M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0",
     imageSrc: "/icons/Muscle%20Growth%20research.png",
   },
   {
     handle: "cognitive-enhancement-research",
-    labelEn: "Cognitive Enhancement",
-    labelDe: "Kognitive Verbesserung",
+    labelEn: "Neuroscience",
+    labelDe: "Neurowissenschaft",
     gradient: "from-yellow-400 to-amber-500",
     iconPath: "M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18",
     imageSrc: "/icons/Cognitive%20Enhancement%20Research.png",
   },
   {
     handle: "healing-and-regeneration-research",
-    labelEn: "Healing & Regeneration",
-    labelDe: "Heilung & Regeneration",
+    labelEn: "Tissue Repair",
+    labelDe: "Geweberegeneration",
     gradient: "from-teal-400 to-cyan-500",
     iconPath: "M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z",
     imageSrc: "/icons/Healing%20and%20Regeneration%20research.png",
@@ -692,7 +709,10 @@ export default async function ShopPage(props: {
   // an empty shop page instead of crashing the whole route.
   const collections = await getCollections().catch(() => [] as Awaited<ReturnType<typeof getCollections>>);
   const listedCollections = collections.filter(
-    (c) => c.handle && !c.handle.startsWith("hidden")
+    (c) =>
+      c.handle &&
+      !c.handle.startsWith("hidden") &&
+      !OFF_CATALOGUE_COLLECTIONS.has(c.handle),
   );
 
   /* Fetch in parallel:
@@ -731,10 +751,10 @@ export default async function ShopPage(props: {
     ).length;
   }
 
-  // A category left empty by the vials-only filter (e.g. an accessories or
-  // anabolics category) must not show up as a dead 0-product link.
+  // A category left empty by the vials-only filter must not show up as a dead
+  // 0-product link either.
   const visibleCollections = listedCollections.filter(
-    (c) => (collectionCounts[c.handle] ?? 0) > 0 || c.handle === activeCollection,
+    (c) => (collectionCounts[c.handle] ?? 0) > 0,
   );
 
   const activeTitle = activeCollection

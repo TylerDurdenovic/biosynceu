@@ -13,6 +13,9 @@ import { isAnabolic } from "lib/departments";
  */
 
 type Named = { handle: string; title: string };
+/** What the storefront filters need off a product: its name plus the
+ *  WooCommerce taxonomy it was filed under. */
+type Catalogued = Named & { tags?: string[]; categories?: string[] };
 
 const hay = (p: Named) => `${p.handle} ${p.title}`.toLowerCase();
 
@@ -29,15 +32,30 @@ export function isHgh(p: Named): boolean {
   return /\bhgh\b|somatropin|191[\s-]?aa|hg-research/.test(hay(p));
 }
 
-/** Reconstitution / lab consumables that aren't a peptide vial. */
-export function isAccessory(p: Named): boolean {
+/** WooCommerce category slugs holding non-vial lab consumables. */
+const ACCESSORY_CATEGORIES = ["accessories", "consumables"];
+
+/**
+ * Reconstitution / lab consumables that aren't a peptide vial.
+ *
+ * Category first — that is how the catalogue is actually organised, and it
+ * catches items the keywords never would ("Alcohol Pads", "Peptide Storage
+ * Box"). The keyword pass stays as a safety net for anything filed only under
+ * a research category.
+ */
+export function isAccessory(p: Catalogued): boolean {
+  const cats = (p.categories ?? []).map((c) => c.toLowerCase());
+  if (ACCESSORY_CATEGORIES.some((c) => cats.includes(c))) return true;
+
   const h = hay(p);
   return (
     h.includes("water") ||
     h.includes("bacteriostatic") ||
     h.includes("syringe") ||
     h.includes("needle") ||
-    h.includes("insulin")
+    h.includes("insulin") ||
+    h.includes("alcohol pad") ||
+    h.includes("storage box")
   );
 }
 
@@ -105,6 +123,6 @@ export function groupedAllOrder(products: Product[]): Product[] {
  * Applied centrally in lib/woocommerce (getProducts / getCollectionProducts /
  * getProductRecommendations) so no listing surface can forget it.
  */
-export function isVialPeptide(p: Named & { tags?: string[] }): boolean {
+export function isVialPeptide(p: Catalogued): boolean {
   return !isPen(p) && !isHgh(p) && !isAccessory(p) && !isAnabolic(p);
 }

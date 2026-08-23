@@ -94,43 +94,6 @@ function AvailabilityBlock({ product }: { product: Product }) {
   );
 }
 
-/* ── Trustpilot badge (inline, no external image dependency) ─────────────── */
-function TrustpilotBadge() {
-  const { lang } = useLanguage();
-  const reviewText = lang === "de" ? "Basierend auf verifizierten Kundenbewertungen" : "Based on verified customer reviews";
-  const excellentText = lang === "de" ? "Ausgezeichnet" : "Excellent";
-
-  return (
-    <div className="mt-5 border-t border-slate-100 pt-5">
-      <a
-        href="https://www.trustpilot.com/review/biosynclabs.to"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Read our reviews on Trustpilot"
-        className="inline-flex flex-col gap-1.5 transition-opacity hover:opacity-80"
-      >
-        <div className="flex items-center gap-1.5">
-          <svg viewBox="0 0 55 52" className="h-5 w-5" aria-hidden="true">
-            <polygon points="27.5,0 34.1,19.1 54.5,19.1 38.7,30.9 45.3,50 27.5,38.2 9.7,50 16.3,30.9 0.5,19.1 20.9,19.1" fill="#00B67A" />
-          </svg>
-          <span className="text-base font-bold tracking-tight text-slate-900">Trustpilot</span>
-        </div>
-        <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <span key={i} className="flex h-6 w-6 items-center justify-center bg-[#00B67A]">
-              <svg viewBox="0 0 55 52" className="h-3.5 w-3.5" fill="white" aria-hidden="true">
-                <polygon points="27.5,0 34.1,19.1 54.5,19.1 38.7,30.9 45.3,50 27.5,38.2 9.7,50 16.3,30.9 0.5,19.1 20.9,19.1" />
-              </svg>
-            </span>
-          ))}
-          <span className="ml-2 text-xs font-semibold text-slate-700">{excellentText}</span>
-        </div>
-        <p className="text-[10px] text-slate-400">{reviewText}</p>
-      </a>
-    </div>
-  );
-}
-
 /* ── Back in stock form ──────────────────────────────────────────────────── */
 function NotifyMeForm({ handle }: { handle: string }) {
   const { t } = useLanguage();
@@ -473,8 +436,6 @@ export function ProductDescription({ product }: { product: Product }) {
           />
         </div>
 
-        {/* ── Trustpilot ── */}
-        <TrustpilotBadge />
       </div>
 
       {/* ── Description from Shopify ── */}

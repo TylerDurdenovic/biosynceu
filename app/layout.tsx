@@ -246,13 +246,13 @@ const siteNav = [
  * they read well as sitelink labels.
  */
 const shopCategories = [
-  { name: "Weight Loss", handle: "weight-loss-research" },
-  { name: "Healing & Regeneration", handle: "healing-and-regeneration-research" },
-  { name: "Longevity & Anti-aging", handle: "longevity-and-anti-aging-research" },
-  { name: "Muscle Growth", handle: "muscle-growth-research" },
-  { name: "Sleep", handle: "sleep-enhancement-research" },
-  { name: "Immunity", handle: "immunity-enhancement-research" },
-  { name: "Cognitive", handle: "cognitive-enhancement-research" },
+  { name: "Metabolic Research", handle: "weight-loss-research" },
+  { name: "Tissue Repair", handle: "healing-and-regeneration-research" },
+  { name: "Cellular Senescence", handle: "longevity-and-anti-aging-research" },
+  { name: "Myogenesis & Recovery", handle: "muscle-growth-research" },
+  { name: "Circadian & Sleep Biology", handle: "sleep-enhancement-research" },
+  { name: "Immunology", handle: "immunity-enhancement-research" },
+  { name: "Neuroscience", handle: "cognitive-enhancement-research" },
 ];
 
 const jsonLd = {

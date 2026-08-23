@@ -13,7 +13,6 @@ import {
   TrustBadgesStrip,
   TrustFeaturesSection,
   TrustedSourceSection,
-  TrustpilotReviewsSection,
 } from "components/pages/home-sections";
 import { getCollectionProducts, getProduct } from "lib/woocommerce";
 import { getProductSocialProof } from "lib/product-social-proof";
@@ -252,11 +251,6 @@ function TrustedSource() {
   return <TrustedSourceSection />;
 }
 
-/* ─── Trustpilot Reviews ─────────────────────────────────────────────────── */
-function TrustpilotReviews() {
-  return <TrustpilotReviewsSection />;
-}
-
 /* ─── Featured Products ──────────────────────────────────────────────────── */
 async function FeaturedProducts() {
   const products = await getCollectionProducts({
@@ -389,7 +383,6 @@ export default function HomePage() {
       </Suspense>
       <Newsletter />
       <TrustedSource />
-      <TrustpilotReviews />
       <Suspense fallback={null}>
         <FeaturedProducts />
       </Suspense>

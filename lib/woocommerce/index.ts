@@ -268,12 +268,47 @@ function reshapeProduct(
   };
 }
 
+/**
+ * Storefront display names for the research categories.
+ *
+ * WooCommerce stores these as consumer-benefit phrases ("Weight Loss",
+ * "Muscle Growth") which read as claims about human use. The catalogue is
+ * Research Use Only, so the storefront shows the research domain instead.
+ * Slugs, URLs and the WooCommerce records themselves are untouched — this is
+ * presentation only.
+ */
+const COLLECTION_LABELS: Record<string, string> = {
+  "longevity-and-anti-aging-research": "Cellular Senescence",
+  "weight-loss-research": "Metabolic Research",
+  "sleep-enhancement-research": "Circadian & Sleep Biology",
+  "immunity-enhancement-research": "Immunology",
+  "muscle-growth-research": "Myogenesis & Recovery",
+  "cognitive-enhancement-research": "Neuroscience",
+  "healing-and-regeneration-research": "Tissue Repair",
+  "aesthetics-essentials": "Aesthetics & Essentials",
+  peptides: "Peptides",
+};
+
+/** WooCommerce returns names HTML-encoded ("Aesthetics &amp; Essentials").
+ *  React escapes on render, so without decoding the user sees the raw entity. */
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+}
+
 function reshapeCollection(cat: WCCategory): Collection {
+  const title = COLLECTION_LABELS[cat.slug] ?? decodeEntities(cat.name);
   return {
     handle: cat.slug,
-    title: cat.name,
-    description: cat.description,
-    seo: { title: cat.name, description: cat.description },
+    title,
+    description: decodeEntities(cat.description),
+    seo: { title, description: decodeEntities(cat.description) },
     path: `/search/${cat.slug}`,
     updatedAt: new Date().toISOString(),
   };
