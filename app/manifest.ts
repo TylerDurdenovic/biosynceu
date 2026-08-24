@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "BioSyncLabs",
     short_name: "BioSyncLabs",
     description:
-      "Germany-based EU research peptide supplier. Buy BPC-157, TB-500, GHK-Cu, Retatrutide and more — HPLC-verified ≥99% purity. Research Use Only.",
+      "Germany-based EU research peptide supplier. Buy BPC-157, TB-500, GHK-Cu, RET-G.L.P.3 and more — HPLC-verified ≥99% purity. Research Use Only.",
     start_url: "/",
     display: "standalone",
     background_color: "#0B1929",

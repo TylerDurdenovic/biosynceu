@@ -117,7 +117,7 @@ export async function generateMetadata(props: {
   const priceLabel = formatPrice(minPrice.amount, minPrice.currencyCode);
   const productUrl = `${baseUrl}/product/${product.handle}`;
 
-  // HTML <title>: "Buy Retatrutide 10mg — €89.00" → root layout template
+  // HTML <title>: "Buy RET-G.L.P.3 10mg — €89.00" → root layout template
   // appends " | BioSyncLabs" automatically. Kept short so it doesn't get
   // truncated in Google SERP. Falls back to merchant-set Shopify SEO title
   // if one is configured.

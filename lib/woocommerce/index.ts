@@ -1,5 +1,6 @@
 import { TAGS } from "lib/constants";
 import { isVialPeptide } from "lib/product-category";
+import { displayTitle, sanitizeFlaggedNames } from "lib/product-naming";
 import {
   unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
@@ -155,7 +156,9 @@ function reshapeImage(
   if (!img?.src) return { ...PLACEHOLDER_IMAGE, altText: fallback || PLACEHOLDER_IMAGE.altText };
   return {
     url: img.src,
-    altText: img.alt || img.name || fallback,
+    // WooCommerce's own image alt/name still carry the original compound name,
+    // so scrub them — otherwise alt text and og:image:alt reintroduce it.
+    altText: sanitizeFlaggedNames(img.alt || img.name || fallback),
     width: 800,
     height: 800,
   };
@@ -184,7 +187,7 @@ function reshapeVariant(v: WCProductVariation, product: WCProduct): ProductVaria
       v.regular_price && v.sale_price && v.regular_price !== v.sale_price
         ? money(v.regular_price)
         : null,
-    image: reshapeImage(v.image ?? product.images[0], product.name),
+    image: reshapeImage(v.image ?? product.images[0], displayTitle(product.slug, product.name)),
   };
 }
 
@@ -203,7 +206,7 @@ function reshapeSimpleVariant(product: WCProduct): ProductVariant {
       product.regular_price && product.sale_price && product.sale_price !== ""
         ? money(product.regular_price)
         : null,
-    image: reshapeImage(product.images[0], product.name),
+    image: reshapeImage(product.images[0], displayTitle(product.slug, product.name)),
   };
 }
 
@@ -232,8 +235,13 @@ function reshapeProduct(
     .filter((n) => !isNaN(n) && n > 0);
   const onSale = compareAts.length > 0 && Math.max(...compareAts) > minPrice;
 
+  // One rename applied centrally — page copy, <title>, image alt text,
+  // JSON-LD, cart, search and the sitemap all read from here, so they can
+  // never disagree.
+  const title = displayTitle(product.slug, product.name);
+
   const images: Image[] = product.images.length
-    ? product.images.map((img) => reshapeImage(img, product.name))
+    ? product.images.map((img) => reshapeImage(img, title))
     : [PLACEHOLDER_IMAGE];
 
   return {
@@ -241,7 +249,7 @@ function reshapeProduct(
     handle: product.slug,
     availableForSale:
       product.stock_status !== "outofstock" && product.purchasable,
-    title: product.name,
+    title,
     description: product.short_description.replace(/<[^>]+>/g, "").trim(),
     descriptionHtml: product.description || product.short_description,
     options: reshapeOptions(product),
@@ -259,7 +267,7 @@ function reshapeProduct(
     featuredImage: images[0]!,
     images,
     seo: {
-      title: product.name,
+      title,
       description: product.short_description.replace(/<[^>]+>/g, "").trim(),
     },
     tags: product.tags.map((t) => t.slug),
@@ -547,7 +555,7 @@ export async function addToCart(
 
     const product = await wcFetch<WCProduct>(`/products/${productId}`);
     let price = product.price || "0";
-    let image = reshapeImage(product.images[0], product.name);
+    let image = reshapeImage(product.images[0], displayTitle(product.slug, product.name));
     let variantTitle = "Default Title";
     let selectedOptions: { name: string; value: string }[] = [];
 
@@ -556,7 +564,7 @@ export async function addToCart(
         `/products/${productId}/variations/${variationId}`,
       );
       price = variation.price || product.price || "0";
-      if (variation.image) image = reshapeImage(variation.image, product.name);
+      if (variation.image) image = reshapeImage(variation.image, displayTitle(product.slug, product.name));
       variantTitle = variation.attributes.map((a) => a.option).join(" / ");
       selectedOptions = variation.attributes.map((a) => ({
         name: a.name,
@@ -569,7 +577,7 @@ export async function addToCart(
       productId,
       variationId,
       quantity: line.quantity,
-      name: product.name,
+      name: displayTitle(product.slug, product.name),
       variantTitle,
       price,
       currency: CURRENCY,

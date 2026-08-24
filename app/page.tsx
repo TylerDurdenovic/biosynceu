@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   // *use* a meta description when it (a) starts with the brand name being
   // searched, (b) is < 160 chars, (c) is unique vs every other page.
   description:
-    "BioSyncLabs is Germany's trusted EU research peptide supplier. BPC-157, TB-500, GHK-Cu, Retatrutide — HPLC-verified ≥99% purity, CoA available online, fast EU shipping.",
+    "BioSyncLabs is Germany's trusted EU research peptide supplier. BPC-157, TB-500, GHK-Cu, RET-G.L.P.3 — HPLC-verified ≥99% purity, CoA available online, fast EU shipping.",
   keywords: [
     // Brand variations — feed these to Google so "BioSync" alone resolves.
     "BioSyncLabs",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     "BPC-157 Germany",
     "TB-500 buy EU",
     "GHK-Cu buy",
-    "Retatrutide EU",
+    "RET-G.L.P.3 EU",
     "peptide supplier Germany",
     "peptide shop EU",
     "high purity peptides online",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title:
       "BioSyncLabs — Buy Research Peptides in Germany & EU | ≥99% Purity",
     description:
-      "Germany-based EU research peptide supplier. BPC-157, TB-500, GHK-Cu, Retatrutide — HPLC-verified ≥99% purity. CoA available online. Fast intra-EU shipping.",
+      "Germany-based EU research peptide supplier. BPC-157, TB-500, GHK-Cu, RET-G.L.P.3 — HPLC-verified ≥99% purity. CoA available online. Fast intra-EU shipping.",
     siteName: "BioSyncLabs",
   },
 };

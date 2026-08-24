@@ -123,7 +123,7 @@ const COLLECTION_BANNERS: Record<string, CollectionBanner> = {
   "weight-loss": {
     tag: "Metabolic research",
     headline: "Metabolic & weight-management peptides",
-    body: "GLP-1, GIP and glucagon receptor agonists used in metabolic pathway and adipose tissue research. Including Retatrutide and next-generation dual/triple agonists.",
+    body: "GLP-1, GIP and glucagon receptor agonists used in metabolic pathway and adipose tissue research. Including RET-G.L.P.3 and next-generation dual/triple agonists.",
     purityNote: "≥ 99% purity · HPLC / NMR verified",
   },
   "accessories": {
@@ -160,10 +160,10 @@ const BENEFIT_META: Record<string, { title: string; description: string; keyword
   },
   "weight-loss-research": {
     title: "Incretin & GLP-1 Analogues | BioSyncLabs",
-    description: "Incretin, GLP-1 and GIP receptor agonist sequences — Retatrutide, AOD-9604, Cagrilintide. ≥99% purity by HPLC. For laboratory research use only.",
+    description: "Incretin, GLP-1 and GIP receptor agonist sequences — RET-G.L.P.3, AOD-9.6.0.4, CAG-A.M.Y.1. ≥99% purity by HPLC. For laboratory research use only.",
     keywords: [
-      "metabolic research peptides EU", "Retatrutide buy EU", "GLP-1 peptides research Germany", "AOD-9604 buy",
-      "Retatrutide kaufen", "AOD-9604 kaufen",
+      "metabolic research peptides EU", "RET-G.L.P.3 buy EU", "GLP-1 peptides research Germany", "AOD-9.6.0.4 buy",
+      "RET-G.L.P.3 kaufen", "AOD-9.6.0.4 kaufen",
     ],
   },
   "sleep-enhancement-research": {
@@ -219,13 +219,13 @@ export async function generateMetadata(
   const specific = collection ? BENEFIT_META[collection] : undefined;
 
   return {
-    title: specific?.title ?? "Shop Research Peptides | BPC-157, TB-500, GHK-Cu, Retatrutide & More",
+    title: specific?.title ?? "Shop Research Peptides | BPC-157, TB-500, GHK-Cu, RET-G.L.P.3 & More",
     description:
       specific?.description ??
-      "Browse all BioSyncLabs research-grade peptides. Buy BPC-157, TB-500, GHK-Cu, Retatrutide, CJC-1295, Ipamorelin and more — shipped from Germany across the EU. ≥99% purity, CoA available online.",
+      "Browse all BioSyncLabs research-grade peptides. Buy BPC-157, TB-500, GHK-Cu, RET-G.L.P.3, CJC-1295, Ipamorelin and more — shipped from Germany across the EU. ≥99% purity, CoA available online.",
     keywords: specific?.keywords ?? [
       "buy peptides Germany", "research peptides EU", "peptide shop EU",
-      "BPC-157 buy", "TB-500 buy EU", "GHK-Cu buy", "Retatrutide buy",
+      "BPC-157 buy", "TB-500 buy EU", "GHK-Cu buy", "RET-G.L.P.3 buy",
       "CJC-1295 buy", "Ipamorelin buy Germany", "peptide supplier Germany",
       "lyophilized peptides buy", "Peptide kaufen Deutschland", "Peptide bestellen EU",
     ],
@@ -795,7 +795,7 @@ export default async function ShopPage(props: {
     ? BENEFIT_META[activeCollection]?.description ??
       COLLECTION_BANNERS[activeCollection.toLowerCase()]?.body ??
       `Research-grade ${activeTitle} peptides from BioSyncLabs — ≥99% purity, shipped from Germany across the EU.`
-    : "Browse all BioSyncLabs research-grade peptides — BPC-157, TB-500, GHK-Cu, Retatrutide, CJC-1295, Ipamorelin and more. ≥99% purity, shipped from Germany across the EU.";
+    : "Browse all BioSyncLabs research-grade peptides — BPC-157, TB-500, GHK-Cu, RET-G.L.P.3, CJC-1295, Ipamorelin and more. ≥99% purity, shipped from Germany across the EU.";
 
   const collectionName = activeCollection
     ? `${activeTitle} Research Peptides`
