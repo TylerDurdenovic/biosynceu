@@ -1,4 +1,3 @@
-import Footer from "components/layout/footer";
 import { TrackForm } from "components/track-form";
 import { TrackPageShell } from "components/track-page-shell";
 import type { Metadata } from "next";
@@ -20,7 +19,6 @@ export default function TrackPage() {
           </TrackPageShell>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

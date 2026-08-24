@@ -5,6 +5,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const SEEN_KEY = "bsl_shop10_seen";
+/** Written by the compliance gates. The promo is the LAST thing a first-time
+ *  visitor should see, so it waits for both to be cleared rather than stacking
+ *  on top of them. */
+const AGE_KEY = "bsl_age_verified_v1";
+const EMAIL_GATE_KEY = "bsl_email_gate_v1";
 const CODE = "SHOP10";
 
 const STRINGS = {
@@ -40,8 +45,14 @@ export function DiscountPopup() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (localStorage.getItem(SEEN_KEY)) return;
-    const timer = setTimeout(() => setOpen(true), 2500);
-    return () => clearTimeout(timer);
+    // Poll until both gates are cleared, then show the promo.
+    const timer = setInterval(() => {
+      if (localStorage.getItem(AGE_KEY) && localStorage.getItem(EMAIL_GATE_KEY)) {
+        clearInterval(timer);
+        setTimeout(() => setOpen(true), 2500);
+      }
+    }, 500);
+    return () => clearInterval(timer);
   }, []);
 
   const dismiss = () => {

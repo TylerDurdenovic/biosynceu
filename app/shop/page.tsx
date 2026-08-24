@@ -1,7 +1,6 @@
 // Slow cPanel host — give the serverless function room for a cold WC fetch.
 export const maxDuration = 30;
 
-import Footer from "components/layout/footer";
 import { ShopAddToCart } from "components/shop-add-to-cart";
 import { ShopMobileControls } from "components/shop-mobile-controls";
 import { WishlistHeart } from "components/wishlist-heart";
@@ -50,56 +49,56 @@ type BenefitArea = {
 const BENEFIT_AREAS: BenefitArea[] = [
   {
     handle: "longevity-and-anti-aging-research",
-    labelEn: "Cellular Senescence",
-    labelDe: "Zelluläre Seneszenz",
+    labelEn: "Longevity Peptides",
+    labelDe: "Longevity-Peptide",
     gradient: "from-amber-400 to-orange-500",
     iconPath: "M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z M18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z",
     imageSrc: "/icons/Longevity%20and%20Anti-aging%20Research.png",
   },
   {
     handle: "weight-loss-research",
-    labelEn: "Metabolic Research",
-    labelDe: "Stoffwechselforschung",
+    labelEn: "Incretin & GLP-1 Analogues",
+    labelDe: "Inkretin- & GLP-1-Analoga",
     gradient: "from-cyan-400 to-blue-500",
     iconPath: "M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z",
     imageSrc: "/icons/Weight%20Loss%20Research.png",
   },
   {
     handle: "sleep-enhancement-research",
-    labelEn: "Circadian & Sleep Biology",
-    labelDe: "Zirkadiane & Schlafbiologie",
+    labelEn: "Neuroregulatory Peptides",
+    labelDe: "Neuroregulatorische Peptide",
     gradient: "from-indigo-400 to-violet-500",
     iconPath: "M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z",
     imageSrc: "/icons/Sleep%20Enhancement%20Research.png",
   },
   {
     handle: "immunity-enhancement-research",
-    labelEn: "Immunology",
-    labelDe: "Immunologie",
+    labelEn: "Thymic & Immune Peptides",
+    labelDe: "Thymische & Immunpeptide",
     gradient: "from-green-400 to-emerald-500",
     iconPath: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
     imageSrc: "/icons/Immunity%20Enhancement%20Research.png",
   },
   {
     handle: "muscle-growth-research",
-    labelEn: "Myogenesis & Recovery",
-    labelDe: "Myogenese & Regeneration",
+    labelEn: "Growth-Factor Peptides",
+    labelDe: "Wachstumsfaktor-Peptide",
     gradient: "from-orange-400 to-red-500",
     iconPath: "M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0",
     imageSrc: "/icons/Muscle%20Growth%20research.png",
   },
   {
     handle: "cognitive-enhancement-research",
-    labelEn: "Neuroscience",
-    labelDe: "Neurowissenschaft",
+    labelEn: "Nootropic Peptides",
+    labelDe: "Nootropische Peptide",
     gradient: "from-yellow-400 to-amber-500",
     iconPath: "M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18",
     imageSrc: "/icons/Cognitive%20Enhancement%20Research.png",
   },
   {
     handle: "healing-and-regeneration-research",
-    labelEn: "Tissue Repair",
-    labelDe: "Geweberegeneration",
+    labelEn: "Regenerative Sequences",
+    labelDe: "Regenerative Sequenzen",
     gradient: "from-teal-400 to-cyan-500",
     iconPath: "M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z",
     imageSrc: "/icons/Healing%20and%20Regeneration%20research.png",
@@ -151,8 +150,8 @@ type ShopT = typeof translations.en.shop | typeof translations.de.shop;
 
 const BENEFIT_META: Record<string, { title: string; description: string; keywords: string[] }> = {
   "longevity-and-anti-aging-research": {
-    title: "Longevity & Anti-Aging Research Peptides | BioSyncLabs",
-    description: "Research compounds for longevity and anti-aging studies. GHK-Cu, Epithalon, BPC-157 and more — ≥99% purity, shipped from Germany.",
+    title: "Longevity Peptides | BioSyncLabs",
+    description: "Longevity-class research peptides — GHK-Cu, Epithalon, BPC-157 and more. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "anti-aging peptides EU", "longevity peptides buy", "Epithalon buy Germany", "GHK-Cu anti-aging research",
       "Epithalon kaufen", "GHK-Cu kaufen", "Kupferpeptid kaufen", "Peptide für Haut", "Anti-Aging Peptide Deutschland",
@@ -160,32 +159,32 @@ const BENEFIT_META: Record<string, { title: string; description: string; keyword
     ],
   },
   "weight-loss-research": {
-    title: "Metabolic Research Peptides | BioSyncLabs",
-    description: "Research peptides for metabolic studies. Retatrutide, AOD-9604 and more — ≥99% purity, shipped from Germany across the EU.",
+    title: "Incretin & GLP-1 Analogues | BioSyncLabs",
+    description: "Incretin, GLP-1 and GIP receptor agonist sequences — Retatrutide, AOD-9604, Cagrilintide. ≥99% purity by HPLC. For laboratory research use only.",
     keywords: [
       "metabolic research peptides EU", "Retatrutide buy EU", "GLP-1 peptides research Germany", "AOD-9604 buy",
       "Retatrutide kaufen", "AOD-9604 kaufen",
     ],
   },
   "sleep-enhancement-research": {
-    title: "Sleep Enhancement Research Peptides | BioSyncLabs",
-    description: "Research peptides for sleep and circadian rhythm studies. DSIP, Selank and more — ≥99% purity, EU shipping.",
+    title: "Neuroregulatory Peptides | BioSyncLabs",
+    description: "Neuroregulatory peptide sequences — DSIP, Selank, Pinealon. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "sleep peptides research", "DSIP buy EU", "sleep enhancement compounds Germany",
       "DSIP kaufen", "Selank kaufen", "Peptide für Schlaf", "Schlaf Peptide Deutschland", "Schlafpeptide kaufen",
     ],
   },
   "immunity-enhancement-research": {
-    title: "Immunity Enhancement Research Peptides | BioSyncLabs",
-    description: "Research-grade immunity compounds. Thymosin Alpha-1, TB-500, BPC-157 and more — ≥99% purity, shipped from Germany.",
+    title: "Thymic & Immune Peptides | BioSyncLabs",
+    description: "Thymic and immune-class peptide sequences — Thymalin, TB-500, KPV. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "immunity peptides EU", "Thymosin Alpha-1 buy", "TB-500 immune research Germany",
       "TB-500 kaufen", "BPC-157 kaufen", "Peptide für Immunsystem", "Immunstärkung Peptide kaufen Deutschland",
     ],
   },
   "muscle-growth-research": {
-    title: "Muscle Growth Research Peptides | BioSyncLabs",
-    description: "Buy research peptides for muscle and recovery studies. BPC-157, TB-500, CJC-1295, Ipamorelin — ≥99% purity, EU-shipped.",
+    title: "Growth-Factor Peptides | BioSyncLabs",
+    description: "Growth-factor and secretagogue sequences — CJC-1295, Ipamorelin, GHRP-2. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "muscle growth peptides EU", "muscle recovery peptides", "CJC-1295 buy Germany", "Ipamorelin research EU",
       "Peptide für Muskelaufbau", "Peptide für Muskeln", "Peptide für Wachstum", "CJC-1295 kaufen",
@@ -193,8 +192,8 @@ const BENEFIT_META: Record<string, { title: string; description: string; keyword
     ],
   },
   "cognitive-enhancement-research": {
-    title: "Cognitive Enhancement Research Peptides | BioSyncLabs",
-    description: "Research compounds for cognitive function studies. Semax, Selank, Dihexa and more — ≥99% purity, shipped from Germany.",
+    title: "Nootropic Peptides | BioSyncLabs",
+    description: "Nootropic-class peptide sequences — Semax, Selank, PE 22-28. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "cognitive peptides EU", "Semax buy Germany", "nootropic peptides research EU",
       "Semax kaufen", "Selank kaufen", "kognitive Peptide kaufen", "Nootropika Peptide Deutschland",
@@ -202,8 +201,8 @@ const BENEFIT_META: Record<string, { title: string; description: string; keyword
     ],
   },
   "healing-and-regeneration-research": {
-    title: "Healing & Regeneration Research Peptides | BioSyncLabs",
-    description: "Research peptides for tissue repair and regeneration studies. BPC-157, TB-500, GHK-Cu — ≥99% purity, shipped across the EU.",
+    title: "Regenerative Sequences | BioSyncLabs",
+    description: "Regenerative peptide sequences — BPC-157, TB-500, GHK-Cu. ≥99% purity by HPLC, CoA per batch. For laboratory research use only.",
     keywords: [
       "tissue repair peptides EU", "BPC-157 buy Germany", "TB-500 regeneration research", "regeneration peptides EU",
       "BPC-157 kaufen", "TB-500 kaufen", "GHK-Cu kaufen", "Peptide für Regeneration",
@@ -922,7 +921,6 @@ export default async function ShopPage(props: {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

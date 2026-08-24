@@ -847,6 +847,12 @@ export default function CartModal({ upsellProduct }: { upsellProduct?: Product }
                     <p className="mt-2 text-center text-xs text-blue-400">
                       {t.cart.secureCheckout} · SSL encrypted
                     </p>
+
+                    {/* RUO disclaimer — required in the cart as well as the
+                        header, footer and PDPs. */}
+                    <p className="mt-2 border-t border-blue-100 pt-2 text-center text-[11px] leading-relaxed text-slate-500">
+                      For laboratory research use only. Not for human consumption.
+                    </p>
                   </div>
                 </div>
               )}

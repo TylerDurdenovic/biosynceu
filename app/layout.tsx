@@ -1,8 +1,11 @@
 import AffiliateTracker from "components/affiliate-tracker";
+import { AgeGate } from "components/age-gate";
+import { EmailGate } from "components/email-gate";
 import { DiscountPopup } from "components/discount-popup";
 import RouteProgress from "components/route-progress";
 import { CartProvider } from "components/cart/cart-context";
 import { Navbar } from "components/layout/navbar";
+import Footer from "components/layout/footer";
 import { HideOnAdmin } from "components/layout/hide-on-admin";
 import { SupportButton } from "components/support-button";
 import { LanguageProvider } from "contexts/language-context";
@@ -246,13 +249,13 @@ const siteNav = [
  * they read well as sitelink labels.
  */
 const shopCategories = [
-  { name: "Metabolic Research", handle: "weight-loss-research" },
-  { name: "Tissue Repair", handle: "healing-and-regeneration-research" },
-  { name: "Cellular Senescence", handle: "longevity-and-anti-aging-research" },
-  { name: "Myogenesis & Recovery", handle: "muscle-growth-research" },
-  { name: "Circadian & Sleep Biology", handle: "sleep-enhancement-research" },
-  { name: "Immunology", handle: "immunity-enhancement-research" },
-  { name: "Neuroscience", handle: "cognitive-enhancement-research" },
+  { name: "Incretin & GLP-1 Analogues", handle: "weight-loss-research" },
+  { name: "Regenerative Sequences", handle: "healing-and-regeneration-research" },
+  { name: "Longevity Peptides", handle: "longevity-and-anti-aging-research" },
+  { name: "Growth-Factor Peptides", handle: "muscle-growth-research" },
+  { name: "Neuroregulatory Peptides", handle: "sleep-enhancement-research" },
+  { name: "Thymic & Immune Peptides", handle: "immunity-enhancement-research" },
+  { name: "Nootropic Peptides", handle: "cognitive-enhancement-research" },
 ];
 
 const jsonLd = {
@@ -482,12 +485,27 @@ window.smartsupp||(function(d) {
                   <Navbar />
                 </HideOnAdmin>
                 <main className="min-h-screen">{children}</main>
+                {/* Rendered once here rather than per-page: the footer carries
+                    the verbatim RUO disclaimer, which must appear on every
+                    route without exception. */}
+                <HideOnAdmin>
+                  <Footer />
+                </HideOnAdmin>
                 <HideOnAdmin>
                   <SupportButton />
                 </HideOnAdmin>
                 {/* SHOP10 10%-off welcome popup — first visit only. */}
                 <HideOnAdmin>
                   <DiscountPopup />
+                </HideOnAdmin>
+                {/* Compliance gates. Order matters: the 21+ gate blocks the
+                    page outright, the email gate waits for it to clear, and
+                    both sit above the promo popup in z-order. */}
+                <HideOnAdmin>
+                  <EmailGate />
+                </HideOnAdmin>
+                <HideOnAdmin>
+                  <AgeGate />
                 </HideOnAdmin>
                 <Toaster
                   closeButton

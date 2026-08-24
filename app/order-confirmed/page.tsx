@@ -1,4 +1,3 @@
-import Footer from "components/layout/footer";
 import OrderConfirmedContent from "components/pages/order-confirmed-content";
 import { getOrderByKey } from "lib/woocommerce";
 import type { Metadata } from "next";
@@ -28,7 +27,6 @@ export default async function OrderConfirmedPage(props: {
   return (
     <>
       <OrderConfirmedContent order={order} bank={bank} />
-      <Footer />
     </>
   );
 }

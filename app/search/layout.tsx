@@ -1,4 +1,3 @@
-import Footer from "components/layout/footer";
 
 export default function SearchLayout({
   children,
@@ -8,7 +7,6 @@ export default function SearchLayout({
   return (
     <>
       {children}
-      <Footer />
     </>
   );
 }

@@ -7,7 +7,6 @@ export const maxDuration = 30;
 // bust the cache via revalidateTag on change.)
 export const revalidate = 300;
 
-import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { FrequentlyBoughtTogether } from "components/product/frequently-bought-together";
 import { ProductBreadcrumb, RelatedProductsSection } from "components/product/product-page-client";
@@ -16,7 +15,6 @@ import { ProductPageWrapper } from "components/product/product-page-wrapper";
 import { ProductTabs } from "components/product/product-tabs";
 import { StickyCartBar } from "components/product/sticky-cart-bar";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
-import { getProductSocialProof } from "lib/product-social-proof";
 import { getProduct, getProductRecommendations } from "lib/woocommerce";
 import type { Product } from "lib/woocommerce/types";
 import { baseUrl } from "lib/utils";
@@ -280,9 +278,6 @@ export default async function ProductPage(props: {
     ],
   };
 
-  // Deterministic per-product social proof (same handle → same numbers across
-  // SSR/CSR). Drives the aggregateRating rich snippet (review stars in SERP).
-  const sp = getProductSocialProof(product.handle);
   const currency = product.priceRange.minVariantPrice.currencyCode;
 
   // Shipping policy (mirrors the on-site shipping copy): intra-EU dispatch,
@@ -346,13 +341,6 @@ export default async function ProductPage(props: {
     brand: {
       "@type": "Brand",
       name: "BioSyncLabs",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: sp.rating.toFixed(1),
-      reviewCount: sp.reviewCount,
-      bestRating: "5",
-      worstRating: "1",
     },
     offers: {
       "@type": "AggregateOffer",
@@ -441,7 +429,6 @@ export default async function ProductPage(props: {
       <Suspense fallback={null}>
         <StickyCartBar product={product} />
       </Suspense>
-      <Footer />
     </>
   );
 }

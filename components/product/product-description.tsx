@@ -5,7 +5,6 @@ import Prose from "components/prose";
 import { useLanguage } from "contexts/language-context";
 import { type CoaEntry, getCoaByHandle } from "lib/coa-data";
 import { Product } from "lib/woocommerce/types";
-import { getProductSocialProof } from "lib/product-social-proof";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 import { useProductOptions } from "./product-context";
@@ -156,23 +155,6 @@ function NotifyMeForm({ handle }: { handle: string }) {
   );
 }
 
-function ProductMiniStars({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          viewBox="0 0 20 20"
-          className={`h-3.5 w-3.5 ${i < full ? "fill-amber-400" : "fill-slate-200"}`}
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
 /* ── Certificate of Analysis CTA ───────────────────────────────────────────
    A high-trust call-out shown directly below the add-to-cart bullets. When
    we have a product-specific CoA we link straight to the PDF (opens in a new
@@ -298,7 +280,6 @@ export function ProductDescription({ product }: { product: Product }) {
   const { t } = useLanguage();
   const tp = t.product;
   const coa = getCoaByHandle(product.handle);
-  const sp = getProductSocialProof(product.handle);
 
   return (
     <div className="flex h-full flex-col">
@@ -311,22 +292,6 @@ export function ProductDescription({ product }: { product: Product }) {
           <div className="shrink-0 pt-1">
             <ShareButton title={product.title} description={product.description} />
           </div>
-        </div>
-
-        {/* ── Social proof row ── */}
-        <div className="mb-3 flex flex-wrap items-center gap-3">
-          {/* Stars + rating */}
-          <div className="flex items-center gap-1.5">
-            <ProductMiniStars rating={sp.rating} />
-            <span className="text-sm font-bold text-amber-500">{sp.rating.toFixed(1)}</span>
-            <span className="text-xs text-slate-400">({sp.reviewCount} {tp.reviews})</span>
-          </div>
-          {/* Divider */}
-          <span className="hidden h-4 w-px bg-slate-200 sm:block" />
-          {/* Purchased count */}
-          <span className="inline-flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-semibold text-orange-600 ring-1 ring-orange-200">
-            🔥 {sp.purchasedCount}+ {tp.boughtThis}
-          </span>
         </div>
 
         {/* Reactive price */}

@@ -278,14 +278,14 @@ function reshapeProduct(
  * presentation only.
  */
 const COLLECTION_LABELS: Record<string, string> = {
-  "longevity-and-anti-aging-research": "Cellular Senescence",
-  "weight-loss-research": "Metabolic Research",
-  "sleep-enhancement-research": "Circadian & Sleep Biology",
-  "immunity-enhancement-research": "Immunology",
-  "muscle-growth-research": "Myogenesis & Recovery",
-  "cognitive-enhancement-research": "Neuroscience",
-  "healing-and-regeneration-research": "Tissue Repair",
-  "aesthetics-essentials": "Aesthetics & Essentials",
+  "longevity-and-anti-aging-research": "Longevity Peptides",
+  "weight-loss-research": "Incretin & GLP-1 Analogues",
+  "sleep-enhancement-research": "Neuroregulatory Peptides",
+  "immunity-enhancement-research": "Thymic & Immune Peptides",
+  "muscle-growth-research": "Growth-Factor Peptides",
+  "cognitive-enhancement-research": "Nootropic Peptides",
+  "healing-and-regeneration-research": "Regenerative Sequences",
+  "aesthetics-essentials": "Melanocortin Peptides",
   peptides: "Peptides",
 };
 

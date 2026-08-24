@@ -87,6 +87,13 @@ export default async function Footer() {
         )}
       </div>
 
+      {/* RUO disclaimer — rendered verbatim on every page via the footer. */}
+      <div className="border-t border-blue-100 bg-blue-950 dark:border-slate-800">
+        <p className="mx-auto max-w-7xl px-6 py-3 text-center text-[11px] font-medium leading-relaxed tracking-wide text-blue-200">
+          For laboratory research use only. Not for human consumption.
+        </p>
+      </div>
+
       {/* Bottom bar */}
       <div className="border-t border-blue-100 bg-blue-900 dark:border-slate-800 dark:bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 px-6 py-5 text-xs text-blue-300 md:flex-row md:justify-between">

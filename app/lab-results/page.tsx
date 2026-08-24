@@ -1,4 +1,3 @@
-import Footer from "components/layout/footer";
 import LabResultsContent from "components/pages/lab-results-content";
 import { getCoaList } from "lib/coa-files";
 import { baseUrl } from "lib/utils";
@@ -46,7 +45,6 @@ export default function LabResultsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
       />
       <LabResultsContent items={coaList} />
-      <Footer />
     </>
   );
 }

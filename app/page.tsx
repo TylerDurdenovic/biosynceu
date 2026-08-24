@@ -1,7 +1,6 @@
 // Slow cPanel host — give the serverless function room for a cold WC fetch.
 export const maxDuration = 30;
 
-import Footer from "components/layout/footer";
 import {
   BestsellersHeader,
   CarouselHeader,
@@ -15,7 +14,6 @@ import {
   TrustedSourceSection,
 } from "components/pages/home-sections";
 import { getCollectionProducts, getProduct } from "lib/woocommerce";
-import { getProductSocialProof } from "lib/product-social-proof";
 import { Product } from "lib/woocommerce/types";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -72,24 +70,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* ─── Mini stars (server-renderable, no client JS needed) ───────────────── */
-function MiniStars({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  return (
-    <div className="flex items-center gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <svg
-          key={i}
-          viewBox="0 0 20 20"
-          className={`h-3 w-3 ${i < full ? "fill-amber-400" : "fill-slate-200"}`}
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
 /* ─── Hero ──────────────────────────────────────────────────────────────── */
 function Hero() {
   return <HeroSection />;
@@ -140,7 +120,6 @@ async function WeekBestsellers() {
 
         <div className={`mx-auto grid grid-cols-2 justify-center gap-4 sm:grid-cols-3 ${colClass}`}>
           {bestsellers.map((product: Product, i: number) => {
-            const sp = getProductSocialProof(product.handle);
             return (
             <Link
               key={product.handle}
@@ -179,18 +158,6 @@ async function WeekBestsellers() {
               <div className="p-3">
                 <p className="line-clamp-2 min-h-[2.5rem] text-sm font-semibold leading-tight text-slate-900 group-hover:text-slate-700 dark:text-slate-100 dark:group-hover:text-slate-300">
                   {product.title}
-                </p>
-
-                {/* Star rating + review count */}
-                <div className="mt-1.5 flex items-center gap-1.5">
-                  <MiniStars rating={sp.rating} />
-                  <span className="text-[10px] font-semibold text-amber-500">{sp.rating.toFixed(1)}</span>
-                  <span className="text-[10px] text-slate-400">({sp.reviewCount})</span>
-                </div>
-
-                {/* Bought by count */}
-                <p className="mt-1 text-[10px] font-medium text-slate-500 dark:text-slate-400">
-                  🔥 {sp.purchasedCount}+ researchers bought
                 </p>
 
                 {(() => {
@@ -389,7 +356,6 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <HomeCarousel />
       </Suspense>
-      <Footer />
     </>
   );
 }
